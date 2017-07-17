@@ -1,0 +1,50 @@
+* {
+  box-sizing: border-box;
+}
+
+body, html {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+img {
+  height: auto;
+  width: 100%
+}
+
+#banner-video {
+  position: absolute;
+  z-index: 1;
+  top: 0;
+  left: 0;
+  transform: translate(0, -20%);
+  min-width: 100%;
+  min-height: 100%
+  width: auto;
+}
+
+#banner-opaque {
+  position: absolute;
+  z-index: 2;
+  background: rgba(0, 0, 0, 0.5);
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  transform: translate(0, -20%);
+}
+
+#banner-text {
+  position: relative;
+  top: 50%;
+  left: 20%;
+  color: red;
+  font-family: 'Comfortaa', cursive;
+  font-size: 42px;
+}
+
+.title-content {
+  position: absolute;
+  top: 100%;
+}
