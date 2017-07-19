@@ -4,7 +4,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const morgan = require('morgan');
 
-const connectDB = require('./models/connectDB');
+const {connectDB, gracefulShutdown} = require('./models/connectDB');
 const executiveRouter = require('./routers/executiveRouter');
 const legislatorRouter = require('./routers/legislatorRouter');
 
@@ -23,22 +23,26 @@ app.use('/legs', legislatorRouter);
 let server;
 function runServer(databaseUrl=DATABASE_URL, port=PORT) {
   return new Promise((resolve, reject) => {
-    server = app.listen(port, () => {
-      console.log(`Your app is listening on port ${port}`);
-      resolve();
-    })
-    .on('error', (err) => {
-      reject(err);
+    connectDB().then(() => {
+      server = app.listen(port, () => {
+        console.log(`Your app is listening on port ${port}`);
+        resolve();
+      })
+      .on('error', (err) => {
+        reject(err);
+      });
     });
   });
 }
 
 function closeServer() {
-  server.close((err) => {
-    if(err) {
-      return console.error(err)
-    }
-    return;
+  gracefulShutdown().then(() => {
+    server.close((err) => {
+      if(err) {
+        return console.error(err)
+      }
+      return;
+    });
   });
 }
 

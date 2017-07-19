@@ -2,29 +2,17 @@ const {DATABASE_URL} = require('../config');
 var mongoose = require('mongoose');
 
 mongoose.Promise = global.Promise;
-mongoose.connect(DATABASE_URL, {useMongoClient: true});
 
-// CONNECTION EVENTS
-mongoose.connection.on('connected', () => console.log('Mongoose connected to ' + DATABASE_URL));
-mongoose.connection.on('error', (err) => console.log('Mongoose connection error: ' + err));
-mongoose.connection.on('disconnected', () => console.log('Mongoose disconnected'));
-
-// function connectDB() {
-//   return new Promise((resolve, reject) => {
-//     mongoose.connect(DATABASE_URL, {useMongoClient: true}, err => {
-//       if (err) {
-//         return reject(err);
-//       }
-//       resolve();
-//     });
-//   });
-// }
-//
-// connectDB().then(() => {
-//   mongoose.connection.on('connected', () => console.log('Mongoose connected to ' + DATABASE_URL))
-//   .on('error', (err) => console.log('Mongoose connection error: ' + err))
-//   .on('disconnected', () => console.log('Mongoose disconnected'));
-// })
+function connectDB() {
+  return mongoose.connect(DATABASE_URL, {useMongoClient: true})
+  .then(() => {
+    console.log('Mongoose connected to ' + DATABASE_URL);
+    mongoose.connection.on('disconnected', () => console.log('Mongoose disconnected'));
+  })
+  .catch((err) => {
+    console.log('Mongoose connection error: ' + err);
+  });
+}
 
 // CAPTURE APP TERMINATION / RESTART EVENTS
 // To be called when process is restarted or terminated
@@ -59,3 +47,5 @@ process.on('SIGTERM', () => {
   .then(() => process.exit(0))
   .catch((err) => console.error(err));
 });
+
+module.exports = {connectDB, gracefulShutdown};
