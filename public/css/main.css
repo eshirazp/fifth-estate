@@ -38,21 +38,15 @@ video::-webkit-media-controls {
 }
 
 #banner-text {
-  display: inline-block;
-  position: relative;
-  top: 50%;
-  left: 20%;
+  position: absolute;
+  top: 10%;
+  left: 40%;
   color: red;
   font-family: 'Comfortaa', cursive;
   font-size: 42px;
 }
 
-.results {
-  position: absolute;
-  top: 110%;
-}
-
-.dropdown-menu {
-  position: absolute;
-  top: 100%;
+.content {
+  position: relative;
+  padding-top: 100px;
 }
