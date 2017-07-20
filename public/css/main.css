@@ -52,6 +52,14 @@ video::-webkit-media-controls {
   left: 45%;
 }
 
+form {
+  display: inline-block;
+}
+
+input {
+  display: inline-block;
+}
+
 .content {
   position: relative;
   padding-top: 100px;
