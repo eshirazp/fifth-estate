@@ -18,7 +18,7 @@ var legs = [
       "religion": "None"
     },
     "terms": [{
-      "type": "Senator",
+      "type": "sen",
       "start": 1989-01-21,
       "end": 3001-01-21,
       "state": "CA",
@@ -55,7 +55,7 @@ var legs = [
       "religion": "None"
     },
     "terms": [{
-      "type": "Representative",
+      "type": "rep",
       "start": 1986-07-02,
       "end": 3001-01-21,
       "state": "CA",
@@ -77,11 +77,12 @@ var legs = [
 /********************/
 var parseResult = function(legObj) {
   return {
+    "bioguide": legObj.usid.bioguide,
     "official_full": legObj.name.official_full,
-    "type": legObj.terms[0].type,
-    "state": legObj.terms[0].state,
-    "district": legObj.terms[0].district,
-    "party": legObj.terms[0].party,
+    "type": legObj.terms[legObj.terms.length-1].type,
+    "state": legObj.terms[legObj.terms.length-1].state,
+    "district": legObj.terms[legObj.terms.length-1].district,
+    "party": legObj.terms[legObj.terms.length-1].party,
     "comments": legObj.comments
   }
 }
@@ -110,18 +111,18 @@ var retrieveAll = function() {
 
 var retrieveOne = function(id) {
   let legIdx = findByIdIndex(id);
-  
-  if(legIdx === -1) { return; } 
+
+  if(legIdx === -1) { return; }
 
   return parseResult(legs[legIdx]);
 };
 
 var retrieveByState = function(state, type) {
-  
+
   var retrieveBySenator = function(congress) {
     let arr = [];
     for(let i=0; i < congress.length; i++) {
-      if(congress[i].terms[0].type === "Senator") {
+      if(congress[i].terms[congress[i].terms.length-1].type === "sen") {
         arr.push(parseResult(congress[i]));
       }
     }
@@ -131,7 +132,7 @@ var retrieveByState = function(state, type) {
   var retrieveByRepresentative = function(congress) {
     let arr = [];
     for(let i=0; i < congress.length; i++) {
-      if(congress[i].terms[0].type === "Representative") {
+      if(congress[i].terms[congress[i].terms.length-1].type === "rep") {
         arr.push(parseResult(congress[i]));
       }
     }
@@ -140,7 +141,7 @@ var retrieveByState = function(state, type) {
 
   let arr = [];
   for(let i=0; i < legs.length; i++) {
-    if(legs[i].terms[0].state === state) {
+    if(legs[i].terms[legs[i].terms.length-1].state === state) {
       arr.push(legs[i]);
     }
   }
@@ -178,8 +179,8 @@ var retrieveExistingComment = function(leg, comment) {
 
 var createComment = function(id, comment) {
   let legIdx = findByIdIndex(id);
-  if(legIdx === -1) { return; } 
-  
+  if(legIdx === -1) { return; }
+
   if(!(checkRequiredFieldsComments(comment))) { return; }
 
   legs[legIdx].comments.push(comment);
@@ -188,17 +189,17 @@ var createComment = function(id, comment) {
 
 var retrieveComments = function(id) {
   let legIdx = findByIdIndex(id);
-  if(legIdx === -1) { return; } 
+  if(legIdx === -1) { return; }
 
   return legs[legIdx].comments;
 }
 
 var updateComment = function(id, comment) {
   let legIdx = findByIdIndex(id);
-  if(legIdx === -1) { return; } 
-  
+  if(legIdx === -1) { return; }
+
   if(!(checkRequiredFieldsComments(comment))) { return; }
-  
+
   let newCommentIdx = retrieveExistingComment(legs[legIdx],comment);
   if(newCommentIdx === -1) { return; }
   legs[legIdx].comments[newCommentIdx] = comment;
@@ -207,31 +208,31 @@ var updateComment = function(id, comment) {
 
 var deleteComment = function(id, comment) {
   let legIdx = findByIdIndex(id);
-  if(legIdx === -1) { return; } 
-  
+  if(legIdx === -1) { return; }
+
   let newCommentIdx = retrieveExistingComment(legs[legIdx],comment);
   if(newCommentIdx === -1) { return; }
-  
+
   legs[legIdx].comments.splice(newCommentIdx, 1);
   return parseResult(legs[legIdx]);
 };
 
 function revealResults(state) {
-  let cardSetupBeg = '<div class="results-card medium-3 small-4">';
+  let cardSetupBeg = '<div class="results-card medium-3 small-4 cell">';
   let cardSetupEnd = '</div>';
 
   let senators = retrieveByState(state, "Senators");
   let senatorsHTML = "";
 
   for(let i=0; i < senators.length; i++) {
-    senatorsHTML += cardSetupBeg + '<img src="https://upload.wikimedia.org/wikipedia/commons/4/4b/Seal_of_the_United_States_Congress.svg" alt="">' + '<p>' + senators[i].official_full + '</p>' + '<p>' + senators[i].type + '</p>' +  '<p>' + senators[i].state + '</p>' + '<p>' + senators[i].party + '</p>' + cardSetupEnd;
+    senatorsHTML += cardSetupBeg + '<img src="https://theunitedstates.io/images/congress/original/D000598.jpg" alt="">' + '<p class="results-text">' + senators[i].official_full + '</p>' + '<p class="results-text">Senator' + '<p class="results-text">' + senators[i].state + '</p>' + '<p class="results-text">' + senators[i].party + '</p>' + cardSetupEnd;
   }
 
   let representatives = retrieveByState(state, "Representatives");
   let representativesHTML = "";
 
   for(let i=0; i < representatives.length; i++) {
-    representativesHTML += cardSetupBeg + '<img src="https://upload.wikimedia.org/wikipedia/commons/4/4b/Seal_of_the_United_States_Congress.svg" alt="">' + '<p>' + representatives[i].official_full + '</p>' + '<p>' + representatives[i].type + '</p>' +  '<p>' + representatives[i].state + '</p>' +  '<p>' + representatives[i].district + '</p>' +  '<p>' + representatives[i].party + '</p>' + cardSetupEnd;
+    representativesHTML += cardSetupBeg + '<img src="https://theunitedstates.io/images/congress/original/D000598.jpg" alt="">' + '<p class="results-text">' + representatives[i].official_full + '</p>' + '<p class="results-text">Representative' + '<p class="results-text">' + representatives[i].state + '- District ' +  representatives[i].district + '</p>' +  '<p class="results-text">' + representatives[i].party + '</p>' + cardSetupEnd;
   }
 
   $('.js-senators-div').empty();
@@ -267,4 +268,4 @@ var debugCRUD = function() {
   console.log(retrieveByState("CA", "Senators"));
   console.log("Representatives");
   console.log(retrieveByState("CA", "Representatives"));
-}  
+}
