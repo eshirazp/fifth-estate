@@ -264,38 +264,6 @@ var retrieveOne = function(id) {
   return parseResult(legs[legIdx]);
 };
 
-var retrieveByState = function(state, type) {
-
-  var retrieveBySenator = function(congress) {
-    let arr = [];
-    for(let i=0; i < congress.length; i++) {
-      if(congress[i].terms[congress[i].terms.length-1].type === "sen") {
-        arr.push(parseResult(congress[i]));
-      }
-    }
-    return arr;
-  };
-
-  var retrieveByRepresentative = function(congress) {
-    let arr = [];
-    for(let i=0; i < congress.length; i++) {
-      if(congress[i].terms[congress[i].terms.length-1].type === "rep") {
-        arr.push(parseResult(congress[i]));
-      }
-    }
-    return arr;
-  };
-
-  let arr = [];
-  for(let i=0; i < legs.length; i++) {
-    if(legs[i].terms[legs[i].terms.length-1].state === state) {
-      arr.push(legs[i]);
-    }
-  }
-  if(type === "Senators") { return retrieveBySenator(arr); }
-  if(type === "Representatives") { return retrieveByRepresentative(arr); }
-}
-
 
 /*********************/
 /* CRUD for Comments */
@@ -429,8 +397,16 @@ function representativesResults(representatives) {
 /**************************/
 /* Display Results on DOM */
 /**************************/
+function hideSearching() {
+  $('.js-searching').removeClass("hidden");
+}
+
+function revealSearching() {
+  $('.js-searching').addClass("hidden");
+}
+
 function revealResultsHeaders() {
-  $('.results-headers').removeClass("hidden");
+  $('.js-results-header').removeClass("hidden");
 }
 
 function revealResults(state) {
@@ -440,9 +416,11 @@ function revealResults(state) {
   $('.js-senators-div').empty();
   $('.js-representatives-div').empty();
 
+  hideSearching();
   revealResultsHeaders();
   $('.js-senators-div').html(senatorsHTML);
   $('.js-representatives-div').html(representativesHTML);
+  revealSearching();
 }
 
 /*****************/
