@@ -1,3 +1,6 @@
+const ENTER_KEY = 13;
+const MAX_COMMENTS = 3;
+
 var legs = [
   {
     "usid": {
@@ -15,6 +18,43 @@ var legs = [
     "bio": {
       "birthday": 1989-01-21,
       "gender": "M",
+      "religion": "None"
+    },
+    "terms": [{
+      "type": "sen",
+      "start": 1989-01-21,
+      "end": 3001-01-21,
+      "state": "CA",
+      "district": 0,
+      "party": "Democrat"
+    }],
+    "comments": [
+      {
+        "name": "David Vigodneir",
+        "review": "Hes great!"
+      },
+      {
+        "name": "Anna Castro",
+        "review": "Great lover!"
+      }
+    ]
+  },
+  {
+    "usid": {
+      "bioguide": "12346A",
+      "govtrack": 12346,
+      "opensecrets": "12346A",
+      "votesmart": 123457
+    },
+    "name": {
+      "first": "Anna",
+      "middle": "K",
+      "last": "Castro",
+      "official_full": "Anna Castro",
+    },
+    "bio": {
+      "birthday": 1989-01-21,
+      "gender": "F",
       "religion": "None"
     },
     "terms": [{
@@ -59,6 +99,113 @@ var legs = [
       "start": 1986-07-02,
       "end": 3001-01-21,
       "state": "CA",
+      "district": 6,
+      "party": "Democrat"
+    }],
+    "comments": [
+      {
+        "name": "Negar Atashpanjeh",
+        "review": "Hes aight!"
+      }
+    ]
+  },
+  {
+    "usid": {
+      "bioguide": "62345A",
+      "govtrack": 62345,
+      "opensecrets": "62345A",
+      "votesmart": 623456
+    },
+    "name": {
+      "first": "Elush",
+      "middle": "K",
+      "last": "Shirazpour",
+      "official_full": "AL Elush Shirazpour",
+    },
+    "bio": {
+      "birthday": 1989-01-21,
+      "gender": "M",
+      "religion": "None"
+    },
+    "terms": [{
+      "type": "sen",
+      "start": 1989-01-21,
+      "end": 3001-01-21,
+      "state": "AL",
+      "district": 0,
+      "party": "Democrat"
+    }],
+    "comments": [
+      {
+        "name": "David Vigodneir",
+        "review": "Hes great!"
+      },
+      {
+        "name": "Anna Castro",
+        "review": "Great lover!"
+      }
+    ]
+  },
+  {
+    "usid": {
+      "bioguide": "62346A",
+      "govtrack": 62346,
+      "opensecrets": "62346A",
+      "votesmart": 623457
+    },
+    "name": {
+      "first": "Anna",
+      "middle": "K",
+      "last": "Castro",
+      "official_full": "AL Anna Castro",
+    },
+    "bio": {
+      "birthday": 1989-01-21,
+      "gender": "F",
+      "religion": "None"
+    },
+    "terms": [{
+      "type": "sen",
+      "start": 1989-01-21,
+      "end": 3001-01-21,
+      "state": "AL",
+      "district": 0,
+      "party": "Democrat"
+    }],
+    "comments": [
+      {
+        "name": "David Vigodneir",
+        "review": "Hes great!"
+      },
+      {
+        "name": "Anna Castro",
+        "review": "Great lover!"
+      }
+    ]
+  },
+  {
+    "usid": {
+      "bioguide": "72345A",
+      "govtrack": 72345,
+      "opensecrets": "72345A",
+      "votesmart": 723456
+    },
+    "name": {
+      "first": "Samson",
+      "middle": "D",
+      "last": "Shirazpour",
+      "official_full": "AL Samson Shirazpour",
+    },
+    "bio": {
+      "birthday": 1986-07-02,
+      "gender": "M",
+      "religion": "None"
+    },
+    "terms": [{
+      "type": "rep",
+      "start": 1986-07-02,
+      "end": 3001-01-21,
+      "state": "AL",
       "district": 6,
       "party": "Democrat"
     }],
@@ -217,37 +364,103 @@ var deleteComment = function(id, comment) {
   return parseResult(legs[legIdx]);
 };
 
-function revealResults(state) {
-  let cardSetupBeg = '<div class="results-card medium-3 small-4 cell">';
-  let cardSetupEnd = '</div>';
+/********************/
+/* Results by State */
+/********************/
+function commentResults(comments) {
+  let commentBeg='<div class="comments">';
+  let commentEnd = '</div>';
+  let commentsHTML = "";
+  let len = comments.length;
 
-  let senators = retrieveByState(state, "Senators");
+  if(len > MAX_COMMENTS) {
+    len = MAX_COMMENTS;
+  }
+  for(let i=0; i < len; i++) {
+    commentsHTML += commentBeg + '\
+    <p class="comments-text"><b>' + comments[i].name + '</b>: \
+    <i>' + comments[i].review + '</i></p>' + '\
+    ' + commentEnd;
+  }
+
+  return commentsHTML;
+}
+
+function senatorsResults(senators) {
+  let cardSetupBeg = '<div class="results-card medium-2 small-3 cell">';
+  let cardSetupEnd = '</div>';
   let senatorsHTML = "";
 
   for(let i=0; i < senators.length; i++) {
-    senatorsHTML += cardSetupBeg + '<img src="https://theunitedstates.io/images/congress/original/D000598.jpg" alt="">' + '<p class="results-text">' + senators[i].official_full + '</p>' + '<p class="results-text">Senator' + '<p class="results-text">' + senators[i].state + '</p>' + '<p class="results-text">' + senators[i].party + '</p>' + cardSetupEnd;
+    let commentsHTML = commentResults(senators[i].comments);
+
+    senatorsHTML += cardSetupBeg + '\
+      <img src="https://theunitedstates.io/images/congress/original/D000598.jpg" alt="">' + '\
+      <p class="results-text">' + senators[i].official_full + '</p>' + '\
+      <p class="results-text">Senator' + '\
+      <p class="results-text">' + senators[i].state + '</p>' + '\
+      <p class="results-text">' + senators[i].party + '</p>' + '\
+      ' + commentsHTML + cardSetupEnd;
   }
 
-  let representatives = retrieveByState(state, "Representatives");
+  return senatorsHTML;
+}
+
+function representativesResults(representatives) {
+  let cardSetupBeg = '<div class="results-card medium-2 small-3 cell">';
+  let cardSetupEnd = '</div>';
+
   let representativesHTML = "";
-
   for(let i=0; i < representatives.length; i++) {
-    representativesHTML += cardSetupBeg + '<img src="https://theunitedstates.io/images/congress/original/D000598.jpg" alt="">' + '<p class="results-text">' + representatives[i].official_full + '</p>' + '<p class="results-text">Representative' + '<p class="results-text">' + representatives[i].state + '- District ' +  representatives[i].district + '</p>' +  '<p class="results-text">' + representatives[i].party + '</p>' + cardSetupEnd;
+    let commentsHTML = commentResults(representatives[i].comments);
+
+    representativesHTML += cardSetupBeg + '\
+      <img src="https://theunitedstates.io/images/congress/original/D000598.jpg" alt="">' + '\
+      <p class="results-text">' + representatives[i].official_full + '</p>' + '\
+      <p class="results-text">Representative' + '\
+      <p class="results-text">' + representatives[i].state + '- District ' +  representatives[i].district + '</p>' +  '\
+      <p class="results-text">' + representatives[i].party + '</p>' + '\
+      ' + commentsHTML + cardSetupEnd;
   }
+
+  return representativesHTML;
+}
+
+/**************************/
+/* Display Results on DOM */
+/**************************/
+function revealResultsHeaders() {
+  $('.results-headers').removeClass("hidden");
+}
+
+function revealResults(state) {
+  let senatorsHTML = senatorsResults(retrieveByState(state, "Senators"));
+  let representativesHTML = representativesResults(retrieveByState(state, "Representatives"));
 
   $('.js-senators-div').empty();
   $('.js-representatives-div').empty();
 
+  revealResultsHeaders();
   $('.js-senators-div').html(senatorsHTML);
   $('.js-representatives-div').html(representativesHTML);
 }
 
-
+/*****************/
+/* Event Handler */
+/*****************/
 $(function() {
   $("#js-dropdown-submit").click(function(event) {
     event.preventDefault();
     var state = $(this).parent('#js-dropdown-form').find('select[name="states"] option:selected').val();
     revealResults(state);
+  });
+
+  $("#js-dropdown-form").keypress(function(event) {
+    if(event === ENTER_KEY) {
+      event.preventDefault();
+      var state = $(this).find('select[name="states"] option:selected').val();
+      revealResults(state);
+    }
   });
 });
 
