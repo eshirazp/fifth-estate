@@ -287,9 +287,8 @@ $(function() {
     deleteComment(bioguide, type, username);
   }));
 
-  $('#myModal').foundation('reveal', 'open', {
-    url: 'http://some-url',
-    data: {param1: 'value1', param2: 'value2'}
+  $('#buttonForModal').click(function() {
+      $('#myModal').reveal();  
   });
 });
 

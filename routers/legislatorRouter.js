@@ -34,25 +34,32 @@ router.get('/', (req, res) => {
     .find()
     .exec()
     .then(congress => {
-      res.json(congress);
+      res.status(200).json(congress);
     })
     .catch(err => {
       console.error(err);
       res.status(500).json({error: 'Could not get list of Congress'});
     });
 });
-router.get('/:id', (req,res) => {
+router.get('/:state', (req, res) => {
+  var arr = [];
+
   Legislator
-    .findById(req.params.id)
+    .find()
     .exec()
     .then(congress => {
-      res.json(congress);
+      for(var i=0; i < congress.length; i++) {
+        if(congress[i].terms[0].state == req.params.state)
+          arr.push(congress[i]);
+      }
+      res.status(200).json(arr);
     })
     .catch(err => {
       console.error(err);
-      res.status(500).json({error: 'Could not find that member of Congress'});
+      res.status(500).json({error: 'Could not get list of Congress'});
     });
 });
+
 router.put('/:id', jsonParser, (req,res) => {
   const updated = {};
   const updateableFields = ["usid", "name"];
@@ -82,28 +89,11 @@ router.get('/:id/:username', (req,res) => {
   var arr = [];
 
   Comment
-  .find({username: req.params.username})
+  .find({usid: req.params.id, username: req.params.username})
   .exec()
   .then(congress => {
     res.json(congress);
   });
-
-  // Legislator
-  // .findById(req.params.id)
-  //   .select('comments')
-  //   .exec()
-  //   .then(congress => {
-  //     for(var i=0; i < congress.comments.length; i++) {
-  //       if(congress.comments[i].username === req.params.username) {
-  //         arr.push(congress.comments[i]);
-  //       }
-  //     }
-  //     res.status(200).json(arr);
-  //   })
-  //   .catch(err => {
-  //     console.error(err);
-  //     res.status(500).json({error: 'Could not find that username review of that member of Congress'});
-  //   });
 });
 
 // Create Comment
@@ -111,60 +101,55 @@ router.post('/:id', jsonParser, (req,res) => {
   const requiredFields = ["username", "name", "review"];
   for(let i=0; i < requiredFields.length; i++) {
     const field = requiredFields[i];
-    if(!(field in req.body[0])) {
+    if(!(field in req.body)) {
       const message = `Missing \`${field}\` in request body`
       console.error(message);
       return res.status(400).send(req.body);
     }
   }
 
-  console.log(req.params.id);
-  console.log(req.body[0]);
-
-  Legislator
-    .findOneAndUpdate(
-      {"_id": req.params.id},
-      {
-        "$push": {
-          "comments": req.body[0]
-        }
-      },
-      function(err, congress) {
-        if(err) {
-          console.error(err);
-          res.status(500).json({error: 'Something went wrong'});
-        }
-        res.status(201).json(congress);
-      }
-    );
+  Comment.create({
+    "username": req.body.username,
+    "name": req.body.name,
+    "review": req.body.review,
+    "usid": req.params.id
+  })
+  .then((congress) => {
+    res.status(201).json(congress);
+  });
 });
 
+// Update Comment
 router.put('/:id/:cid', jsonParser, (req,res) => {
   const updated = {};
   const updateableFields = ["username", "name", "review"];
   updateableFields.forEach(field => {
-    if (field in req.body.comments) {
+    if (field in req.body) {
       updated[field] = req.body[field];
     }
   });
-  Legislator
-    .findOneAndUpdate(
-      {"_id": req.params.id, "comments._id": req.params.cid},
-      {
-        "$set": {
-          "comments": req.body.comments
-        }
-      },
-      function(err, congress) {
-        if(err) {
-          console.error(err);
-          res.status(500).json({error: 'Something went wrong'});
-        }
-        res.status(201).json(congress);
-      }
-    );
+  Comment.findByIdAndUpdate(req.params.cid,
+    {
+      "username": req.body.username,
+      "name": req.body.name,
+      "review": req.body.review,
+      "usid": req.params.id
+    },
+    {upsert: true, new: true})
+    .exec()
+    .then(comment => res.status(201).json(comment))
+    .catch(err => res.status(500).json({message: 'Something went wrong'}));
 });
 
-
+//Delete Comment
+router.delete('/:id/:cid', (req, res) => {
+  Comment
+    .findByIdAndRemove(req.params.cid)
+    .exec()
+    .then(() => {
+      console.log(`Deleted blog post with id \`${req.params.cid}\``);
+      res.status(204).end();
+    });
+});
 
 module.exports = router;

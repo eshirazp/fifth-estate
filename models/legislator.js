@@ -21,23 +21,15 @@ var mongoose = require('mongoose')
       "gender": String,
       "religion": String
     },
-    "terms": [{
-      "type": String,
-      "start": Date,
-      "end": Date,
-      "state": String,
-      "district": Number,
-      "party": String
-    }],
+    "terms": Array,
     "comments": [{ type: Schema.Types.ObjectId, ref: 'Comment' }]
   });
 
 const commentsSchema = mongoose.Schema({
-  "_id": { type: Number, ref: 'Legislator' },
+  "usid": { type: String, ref: 'Legislator' },
   "username": String,
   "name": String,
-  "review": String,
-  "legislators": [{ type: Number, ref: 'Legislator' }]
+  "review": String
 });
 
 const Comment = mongoose.model('Comment', commentsSchema);
