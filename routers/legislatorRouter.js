@@ -76,18 +76,14 @@ router.get('/', (req, res) => {
   Legislator
     .find()
     .exec()
-    .then(congress => {
-      res.status(200).json(congress);
-    })
-    .catch(err => {
-      console.error(err);
-      res.status(500).json({error: 'Could not get list of Congress'});
-    });
+    .then(congress => res.status(200).json(congress))
+    .catch(err => res.status(500).json({message: 'Something went wrong'}));
 });
 
 /*************************/
 /* CRUD for the comments */
 /*************************/
+
 // Create comment for single member of Congress
 router.post('/:id', jsonParser, (req,res) => {
   const requiredFields = ["username", "name", "review"];
@@ -106,10 +102,10 @@ router.post('/:id', jsonParser, (req,res) => {
     "review": req.body.review,
     "usid": req.params.id
   })
-  .then((congress) => {
-    res.status(201).json(congress);
-  });
+  .then((congress) => res.status(201).json(congress))
+  .catch(err => res.status(500).json({message: 'Something went wrong'}));
 });
+
 //Retrieve all comments for single member of Congress
 router.get('/:id', (req,res) => {
   var arr = [];
@@ -117,10 +113,10 @@ router.get('/:id', (req,res) => {
   Comment
   .find({usid: req.params.id})
   .exec()
-  .then(congress => {
-    res.json(congress);
-  });
+  .then(congress => res.json(congress))
+  .catch(err => res.status(500).json({message: 'Something went wrong'}));
 });
+
 //Retrieve username comments for single member of Congress
 router.get('/:id/:username', (req,res) => {
   var arr = [];
@@ -128,10 +124,10 @@ router.get('/:id/:username', (req,res) => {
   Comment
   .find({usid: req.params.id, username: req.params.username})
   .exec()
-  .then(congress => {
-    res.json(congress);
-  });
+  .then(congress => res.json(congress))
+  .catch(err => res.status(500).json({message: 'Something went wrong'}));
 });
+
 // Update comment for single member of Congress
 router.put('/:id/:cid', jsonParser, (req,res) => {
   const updated = {};
@@ -153,6 +149,7 @@ router.put('/:id/:cid', jsonParser, (req,res) => {
     .then(comment => res.status(201).json(comment))
     .catch(err => res.status(500).json({message: 'Something went wrong'}));
 });
+
 //Delete Comment for single member of Congress
 router.delete('/:id/:cid', (req, res) => {
   Comment
