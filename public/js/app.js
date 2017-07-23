@@ -1,394 +1,98 @@
 const ENTER_KEY = 13;
-const MAX_COMMENTS = 3;
+const MAX_COMMENTS = 5;
 
-var legs = [
-  {
-    "usid": {
-      "bioguide": "12345A",
-      "govtrack": 12345,
-      "opensecrets": "12345A",
-      "votesmart": 123456
-    },
-    "name": {
-      "first": "Elush",
-      "middle": "K",
-      "last": "Shirazpour",
-      "official_full": "Elush Shirazpour",
-    },
-    "bio": {
-      "birthday": 1989-01-21,
-      "gender": "M",
-      "religion": "None"
-    },
-    "terms": [{
-      "type": "sen",
-      "start": 1989-01-21,
-      "end": 3001-01-21,
-      "state": "CA",
-      "district": 0,
-      "party": "Democrat"
-    }],
-    "comments": [
-      {
-        "name": "David Vigodneir",
-        "review": "Hes great!"
-      },
-      {
-        "name": "Anna Castro",
-        "review": "Great lover!"
-      }
-    ]
-  },
-  {
-    "usid": {
-      "bioguide": "12346A",
-      "govtrack": 12346,
-      "opensecrets": "12346A",
-      "votesmart": 123457
-    },
-    "name": {
-      "first": "Anna",
-      "middle": "K",
-      "last": "Castro",
-      "official_full": "Anna Castro",
-    },
-    "bio": {
-      "birthday": 1989-01-21,
-      "gender": "F",
-      "religion": "None"
-    },
-    "terms": [{
-      "type": "sen",
-      "start": 1989-01-21,
-      "end": 3001-01-21,
-      "state": "CA",
-      "district": 0,
-      "party": "Democrat"
-    }],
-    "comments": [
-      {
-        "name": "David Vigodneir",
-        "review": "Hes great!"
-      },
-      {
-        "name": "Anna Castro",
-        "review": "Great lover!"
-      }
-    ]
-  },
-  {
-    "usid": {
-      "bioguide": "22345A",
-      "govtrack": 22345,
-      "opensecrets": "22345A",
-      "votesmart": 223456
-    },
-    "name": {
-      "first": "Samson",
-      "middle": "D",
-      "last": "Shirazpour",
-      "official_full": "Samson Shirazpour",
-    },
-    "bio": {
-      "birthday": 1986-07-02,
-      "gender": "M",
-      "religion": "None"
-    },
-    "terms": [{
-      "type": "rep",
-      "start": 1986-07-02,
-      "end": 3001-01-21,
-      "state": "CA",
-      "district": 6,
-      "party": "Democrat"
-    }],
-    "comments": [
-      {
-        "name": "Negar Atashpanjeh",
-        "review": "Hes aight!"
-      }
-    ]
-  },
-  {
-    "usid": {
-      "bioguide": "62345A",
-      "govtrack": 62345,
-      "opensecrets": "62345A",
-      "votesmart": 623456
-    },
-    "name": {
-      "first": "Elush",
-      "middle": "K",
-      "last": "Shirazpour",
-      "official_full": "AL Elush Shirazpour",
-    },
-    "bio": {
-      "birthday": 1989-01-21,
-      "gender": "M",
-      "religion": "None"
-    },
-    "terms": [{
-      "type": "sen",
-      "start": 1989-01-21,
-      "end": 3001-01-21,
-      "state": "AL",
-      "district": 0,
-      "party": "Democrat"
-    }],
-    "comments": [
-      {
-        "name": "David Vigodneir",
-        "review": "Hes great!"
-      },
-      {
-        "name": "Anna Castro",
-        "review": "Great lover!"
-      }
-    ]
-  },
-  {
-    "usid": {
-      "bioguide": "62346A",
-      "govtrack": 62346,
-      "opensecrets": "62346A",
-      "votesmart": 623457
-    },
-    "name": {
-      "first": "Anna",
-      "middle": "K",
-      "last": "Castro",
-      "official_full": "AL Anna Castro",
-    },
-    "bio": {
-      "birthday": 1989-01-21,
-      "gender": "F",
-      "religion": "None"
-    },
-    "terms": [{
-      "type": "sen",
-      "start": 1989-01-21,
-      "end": 3001-01-21,
-      "state": "AL",
-      "district": 0,
-      "party": "Democrat"
-    }],
-    "comments": [
-      {
-        "name": "David Vigodneir",
-        "review": "Hes great!"
-      },
-      {
-        "name": "Anna Castro",
-        "review": "Great lover!"
-      }
-    ]
-  },
-  {
-    "usid": {
-      "bioguide": "72345A",
-      "govtrack": 72345,
-      "opensecrets": "72345A",
-      "votesmart": 723456
-    },
-    "name": {
-      "first": "Samson",
-      "middle": "D",
-      "last": "Shirazpour",
-      "official_full": "AL Samson Shirazpour",
-    },
-    "bio": {
-      "birthday": 1986-07-02,
-      "gender": "M",
-      "religion": "None"
-    },
-    "terms": [{
-      "type": "rep",
-      "start": 1986-07-02,
-      "end": 3001-01-21,
-      "state": "AL",
-      "district": 6,
-      "party": "Democrat"
-    }],
-    "comments": [
-      {
-        "name": "Negar Atashpanjeh",
-        "review": "Hes aight!"
-      }
-    ]
-  }
-]
-
-
-/********************/
-/* Helper Functions */
-/********************/
-var parseResult = function(legObj) {
-  return {
-    "bioguide": legObj.usid.bioguide,
-    "official_full": legObj.name.official_full,
-    "type": legObj.terms[legObj.terms.length-1].type,
-    "state": legObj.terms[legObj.terms.length-1].state,
-    "district": legObj.terms[legObj.terms.length-1].district,
-    "party": legObj.terms[legObj.terms.length-1].party,
-    "comments": legObj.comments
-  }
-}
-
-var findByIdIndex = function(id) {
-  for(let i=0; i < legs.length; i++) {
-    if(id === legs[i].usid.govtrack)
-      return i;
-  }
-  const message = `Wrong id \`${id}\` in request body`
-  console.log(message);
-  return -1;
+var store = {
+  // "state": "ca",
+  // "sen": [
+  //   {
+  //      comments: [
+  //        {
+  //        },
+  //        {
+  //        }
+  //      ]
+  //   },
+  //   {
+  //
+  //   }
+  // ],
+  // "rep": [
+  //   {
+  //
+  //   },
+  //   {
+  //
+  //   }
+  // ]
 };
 
-
-/**************************/
-/* Retriving for Congress */
-/**************************/
-var retrieveAll = function() {
-  let arr = [];
-  for(let i=0; i < legs.length; i++) {
-    arr.push(parseResult(legs[i]));
-  }
-  return arr;
-};
-
-var retrieveOne = function(id) {
-  let legIdx = findByIdIndex(id);
-
-  if(legIdx === -1) { return; }
-
-  return parseResult(legs[legIdx]);
-};
-
-
-/*********************/
-/* CRUD for Comments */
-/*********************/
-var checkRequiredFieldsComments = function(comment) {
-  const requiredFields = ['name', 'review'];
-  for (let i=0; i<requiredFields.length; i++) {
-    const field = requiredFields[i];
-    if (!(field in comment)) {
-      const message = `Missing \`${field}\` in request body`
-      console.log(message);
-      return false;
-    }
-  }
-  return true;
-};
-
-var retrieveExistingComment = function(leg, comment) {
-  for(let i=0; i < leg.comments.length; i++) {
-    if(leg.comments[i].name === comment.name) {
-      return i;
-    }
-  }
-  const message = `Review name \`${comment.name}\` in request body does not exist`
-  console.log(message);
-  return -1;
-};
-
-var createComment = function(id, comment) {
-  let legIdx = findByIdIndex(id);
-  if(legIdx === -1) { return; }
-
-  if(!(checkRequiredFieldsComments(comment))) { return; }
-
-  legs[legIdx].comments.push(comment);
-  return parseResult(legs[legIdx]);
-};
-
-var retrieveComments = function(id) {
-  let legIdx = findByIdIndex(id);
-  if(legIdx === -1) { return; }
-
-  return legs[legIdx].comments;
-}
-
-var updateComment = function(id, comment) {
-  let legIdx = findByIdIndex(id);
-  if(legIdx === -1) { return; }
-
-  if(!(checkRequiredFieldsComments(comment))) { return; }
-
-  let newCommentIdx = retrieveExistingComment(legs[legIdx],comment);
-  if(newCommentIdx === -1) { return; }
-  legs[legIdx].comments[newCommentIdx] = comment;
-  return parseResult(legs[legIdx]);
-};
-
-var deleteComment = function(id, comment) {
-  let legIdx = findByIdIndex(id);
-  if(legIdx === -1) { return; }
-
-  let newCommentIdx = retrieveExistingComment(legs[legIdx],comment);
-  if(newCommentIdx === -1) { return; }
-
-  legs[legIdx].comments.splice(newCommentIdx, 1);
-  return parseResult(legs[legIdx]);
-};
-
-/********************/
-/* Results by State */
-/********************/
+/*********************************************/
+/* Acquire State HTML Strings for renderHTML */
+/*********************************************/
 function commentResults(comments) {
-  let commentBeg='<div class="comments">';
-  let commentEnd = '</div>';
-  let commentsHTML = "";
-  let len = comments.length;
+  var commentsListBeg = '<div class="js-comments-list">'
+  var commentBeg='<div class="comment">';
+  var updateButton = '<button class="js-update-button comment-button update-button">Update</button>';
+  var deleteButton = '<button class="js-delete-button comment-button delete-button">Delete</button>'
+  var addButton = '<button class="js-add-button comment-button add-button">Add Comment</button>';
+  var divEnd = '</div>';
+
+  var commentsHTML = "";
+  var len = comments.length;
 
   if(len > MAX_COMMENTS) {
     len = MAX_COMMENTS;
   }
-  for(let i=0; i < len; i++) {
-    commentsHTML += commentBeg + '\
-    <p class="comments-text"><b>' + comments[i].name + '</b>: \
+  for(var i=0; i < len; i++) {
+    commentsHTML += commentsListBeg + commentBeg + '\
+    <p class="comment-username hidden">' + comments[i].username + '</p>'+ '\
+    <p class="comment-text"><b>' + comments[i].name + '</b>: \
     <i>' + comments[i].review + '</i></p>' + '\
-    ' + commentEnd;
+    ' + divEnd + updateButton + deleteButton + divEnd;
   }
-
+  commentsHTML += addButton;
   return commentsHTML;
 }
 
-function senatorsResults(senators) {
-  let cardSetupBeg = '<div class="results-card medium-2 small-3 cell">';
-  let cardSetupEnd = '</div>';
-  let senatorsHTML = "";
+function senatorsResults() {
+  var cardSetupBeg = '<div class="results-card medium-2 small-3 cell">';
+  var divEnd = '</div>';
+  var senatorsHTML = "";
 
-  for(let i=0; i < senators.length; i++) {
-    let commentsHTML = commentResults(senators[i].comments);
+  for(var i=0; i < store.sen.length; i++) {
+    var commentsHTML = commentResults(store.sen[i].comments);
 
     senatorsHTML += cardSetupBeg + '\
+      <p class="con-type hidden">' + store.sen[i].type + '</p>' + '\
+      <p class="con-biograde hidden">' + store.sen[i].bioguide + '</p>' + '\
       <img src="https://theunitedstates.io/images/congress/original/D000598.jpg" alt="">' + '\
-      <p class="results-text">' + senators[i].official_full + '</p>' + '\
-      <p class="results-text">Senator' + '\
-      <p class="results-text">' + senators[i].state + '</p>' + '\
-      <p class="results-text">' + senators[i].party + '</p>' + '\
-      ' + commentsHTML + cardSetupEnd;
+      <p class="results-text">' + store.sen[i].official_full + '</p>' + '\
+      <p class="results-text">Senator</p>' + '\
+      <p class="results-text">' + store.sen[i].state + '</p>' + '\
+      <p class="results-text">' + store.sen[i].party + '</p>' + '\
+      ' + commentsHTML + divEnd;
   }
 
   return senatorsHTML;
 }
 
-function representativesResults(representatives) {
-  let cardSetupBeg = '<div class="results-card medium-2 small-3 cell">';
-  let cardSetupEnd = '</div>';
+function representativesResults() {
+  var cardSetupBeg = '<div class="results-card medium-2 small-3 cell">';
+  var divEnd = '</div>';
+  var representativesHTML = "";
 
-  let representativesHTML = "";
-  for(let i=0; i < representatives.length; i++) {
-    let commentsHTML = commentResults(representatives[i].comments);
+  for(var i=0; i < store.rep.length; i++) {
+    var commentsHTML = commentResults(store.rep[i].comments);
 
     representativesHTML += cardSetupBeg + '\
+      <p class="con-type hidden">' + store.rep[i].type + '</p>' + '\
+      <p class="con-biograde hidden">' + store.rep[i].bioguide + '</p>' + '\
       <img src="https://theunitedstates.io/images/congress/original/D000598.jpg" alt="">' + '\
-      <p class="results-text">' + representatives[i].official_full + '</p>' + '\
+      <p class="results-text">' + store.rep[i].official_full + '</p>' + '\
       <p class="results-text">Representative' + '\
-      <p class="results-text">' + representatives[i].state + '- District ' +  representatives[i].district + '</p>' +  '\
-      <p class="results-text">' + representatives[i].party + '</p>' + '\
-      ' + commentsHTML + cardSetupEnd;
+      <p class="results-text">' + store.rep[i].state + '- District ' +  store.rep[i].district + '</p>' +  '\
+      <p class="results-text">' + store.rep[i].party + '</p>' + '\
+      ' + commentsHTML + divEnd;
   }
 
   return representativesHTML;
@@ -398,29 +102,129 @@ function representativesResults(representatives) {
 /* Display Results on DOM */
 /**************************/
 function hideSearching() {
-  $('.js-searching').removeClass("hidden");
+  $('.js-searching').addClass("hidden");
 }
 
 function revealSearching() {
-  $('.js-searching').addClass("hidden");
+  $('.js-searching').removeClass("hidden");
 }
 
 function revealResultsHeaders() {
   $('.js-results-header').removeClass("hidden");
 }
 
-function revealResults(state) {
-  let senatorsHTML = senatorsResults(retrieveByState(state, "Senators"));
-  let representativesHTML = representativesResults(retrieveByState(state, "Representatives"));
+function renderHTML() {
+  let senatorsHTML = senatorsResults();
+  let representativesHTML = representativesResults();
 
   $('.js-senators-div').empty();
   $('.js-representatives-div').empty();
 
-  hideSearching();
+  revealSearching();
   revealResultsHeaders();
   $('.js-senators-div').html(senatorsHTML);
   $('.js-representatives-div').html(representativesHTML);
-  revealSearching();
+  hideSearching();
+}
+
+/**********************************/
+/* Configure and Manipulate Store */
+/**********************************/
+function configureStore(state) {
+  store.state = state;
+  store.sen = retrieveByState(store.state, "Senators");
+  store.rep = retrieveByState(store.state, "Representatives");
+
+  renderHTML();
+}
+
+function congressIdx(bioguide, type) {
+  if(type === "sen") {
+    for(var i=0; i < store.sen.length; i++) {
+      if(store.sen[i].bioguide === bioguide) {
+        return i;
+      }
+    }
+    return -1;
+  }
+
+  if(type === "rep") {
+    for(var i=0; i < store.rep.length; i++) {
+      if(store.rep[i].bioguide === bioguide) {
+        return i;
+      }
+    }
+    return -1;
+  }
+
+  return -1;
+}
+
+function commentIdx(conIdx, type, username) {
+  if(type === "sen") {
+    for(var i=0; i < store.sen[conIdx].comments.length; i++) {
+      if(store.sen[conIdx].comments[i].username === username) {
+        return i;
+      }
+    }
+    return -1;
+  }
+
+  if(type === "rep") {
+    for(var i=0; i < store.rep[conIdx].comments.length; i++) {
+      if(store.rep[conIdx].comments[i].username === username) {
+        return i;
+      }
+    }
+    return -1;
+  }
+
+  return -1;
+}
+
+function createComment(bioguide, type, username, comment) {
+  var conIdx = congressIdx(bioguide, type);
+
+  if(type === 'sen') {
+    store.sen[conIdx].comments.push(comment);
+  }
+  if(type === 'rep') {
+    store.rep[conIdx].comments.push(comment);
+  }
+
+  renderHTML();
+}
+
+function updateComment(bioguide, type, username, comment) {
+  var conIdx = congressIdx(bioguide, type);
+  var comIdx = commentIdx(conIdx, type, username);
+
+  if(type === 'sen') {
+    store.sen[conIdx].comments[comIdx].name = comment.name;
+    store.sen[conIdx].comments[comIdx].review = comment.review;
+  }
+
+  if(type === 'rep') {
+    store.rep[conIdx].comments[comIdx].name = comment.name;
+    store.rep[conIdx].comments[comIdx].review = comment.review;
+  }
+
+  renderHTML();
+}
+
+function deleteComment(bioguide, type, username) {
+  var conIdx = congressIdx(bioguide, type);
+  var comIdx = commentIdx(conIdx, type, username);
+
+  if(type === 'sen') {
+    store.sen[conIdx].comments.splice(comIdx, 1);
+  }
+
+  if(type === 'rep') {
+    store.rep[conIdx].comments.splice(comIdx, 1);
+  }
+
+  renderHTML();
 }
 
 /*****************/
@@ -430,15 +234,62 @@ $(function() {
   $("#js-dropdown-submit").click(function(event) {
     event.preventDefault();
     var state = $(this).parent('#js-dropdown-form').find('select[name="states"] option:selected').val();
-    revealResults(state);
+    configureStore(state);
   });
 
   $("#js-dropdown-form").keypress(function(event) {
     if(event === ENTER_KEY) {
       event.preventDefault();
       var state = $(this).find('select[name="states"] option:selected').val();
-      revealResults(state);
+      configureStore(state);
     }
+  });
+
+  $(".content").on("click", ".js-add-button", (function(event) {
+    event.preventDefault();
+    var username = "eshirazp";
+    var comment = {
+      "username": username,
+      "name": "Elush Shirazpour",
+      "review": "hello add!"
+    };
+    var type = $(this).parent('.results-card').find('.con-type').text();
+    var bioguide = $(this).parent('.results-card').find('.con-biograde').text();
+    console.log(type);
+    console.log(bioguide);
+    createComment(bioguide, type, username, comment);
+  }));
+
+  $(".content").on("click", ".js-update-button", (function(event) {
+    event.preventDefault();
+    var username = $(this).parent('.js-comments-list').find('.comment-username').text();
+    var type = $(this).parent('.js-comments-list').parent('.results-card').find('.con-type').text();
+    var bioguide = $(this).parent('.js-comments-list').parent('.results-card').find('.con-biograde').text();
+    var comment = {
+      "username": username,
+      "name": "Elush Shirazpour",
+      "review": "hello update!"
+    };
+    console.log(username);
+    console.log(type);
+    console.log(bioguide);
+    updateComment(bioguide, type, username, comment);
+  }));
+
+  $(".content").on("click", ".js-delete-button", (function(event) {
+    event.preventDefault();
+    var username = $(this).parent('.js-comments-list').find('.comment-username').text();
+    var type = $(this).parent('.js-comments-list').parent('.results-card').find('.con-type').text();
+    var bioguide = $(this).parent('.js-comments-list').parent('.results-card').find('.con-biograde').text();
+    console.log(username);
+    console.log(type);
+    console.log(bioguide);
+    deleteComment(bioguide, type, username);
+  }));
+
+  $('#myModal').foundation('reveal', 'open', {
+    url: 'http://some-url',
+    data: {param1: 'value1', param2: 'value2'}
   });
 });
 

@@ -8,6 +8,7 @@
   <!-- Stylesheets -->
   <link href="https://fonts.googleapis.com/css?family=Comfortaa|Zilla+Slab|Cinzel:700|Josefin+Slab:400" rel="stylesheet">
   <link rel="stylesheet" href="../css/vendor/foundation.min.css" />
+  <link rel="stylesheet" href="../css/vendor/foundation2.min.css" />
   <link rel="stylesheet" href="../css/main.css" />
 </head>
 <body>
@@ -88,13 +89,29 @@
     <p class="results-text js-searching hidden">Searching...</p>
     <h3 class="results-headers js-results-header hidden">Senators</h3>
     <div class="js-senators-div grid-x">
+
       <!-- <div class="results-card medium-2 small-3 cell">
+        <p class="con-type hidden">sen</p>
+        <p class="con-biograde hidden">12345A</p>
         <img src="https://upload.wikimedia.org/wikipedia/commons/4/4b/Seal_of_the_United_States_Congress.svg" alt="">
         <p class="results-text">Executive 1</p>
-        <div class="comments">
-          <p class="comments-text"><b>David Vigodneir</b>: <i>He rocks</i></p>
+        <div class="js-comments-list">
+          <div class="comment">
+            <p class="comment-username hidden">vgod</p>
+            <p class="comment-text"><b>David Vigodneir</b>: <i>He rocks</i></p>
+          </div>
+          <button class="js-update-button comment-button update-button">Update</button>
+          <button class="js-delete-button comment-button delete-button">Delete</button>
         </div>
-      </div>
+        <div class="js-comments-list">
+          <div class="comment">
+            <p class="comment-text"><b>David Vigodneir</b>: <i>He rocks</i></p>
+          </div>
+          <button class="comment-button delete-button">Delete</button>
+        </div>
+        <button class="js-add-button comment-button add-button">Add Comment</button>
+    </div>
+
       <div class="results-card medium-2 small-3 cell">
         <img src="https://upload.wikimedia.org/wikipedia/commons/4/4b/Seal_of_the_United_States_Congress.svg" alt="">
         <p class="results-text">Executive 2</p>
@@ -113,6 +130,15 @@
       </div> -->
     </div>
 
+  </div>
+
+  <a href="#" data-reveal-id="myModal">Click Me For A Modal</a>
+
+  <div id="myModal" class="reveal-modal" data-reveal aria-labelledby="modalTitle" aria-hidden="true" role="dialog">
+    <h2 id="modalTitle">Awesome. I have it.</h2>
+    <p class="lead">Your couch.  It is mine.</p>
+    <p>I'm a cool paragraph that lives inside of an even cooler modal. Wins!</p>
+    <a class="close-reveal-modal" aria-label="Close">&#215;</a>
   </div>
 
   <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
