@@ -124,6 +124,13 @@ p.results-text {
   margin: 0;
 }
 
+.modal-button {
+  display: inline-block;
+  background-color: #4CAF50;
+  color: white;
+  font-size: 18px;
+}
+
 .hidden {
   display: none;
 }
