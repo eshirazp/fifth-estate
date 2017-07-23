@@ -32,9 +32,9 @@ var store = {
 function commentResults(comments) {
   var commentsListBeg = '<div class="js-comments-list">'
   var commentBeg='<div class="comment">';
-  var updateButton = '<button class="js-update-button comment-button update-button">Update</button>';
+  var updateButton = '<button data-open="myModal" class="js-update-button comment-button update-button">Update</button>';
   var deleteButton = '<button class="js-delete-button comment-button delete-button">Delete</button>'
-  var addButton = '<button class="js-add-button comment-button add-button">Add Comment</button>';
+  var addButton = '<button data-open="myModal" class="js-add-button comment-button add-button">Add Comment</button>';
   var divEnd = '</div>';
 
   var commentsHTML = "";
@@ -226,11 +226,15 @@ function deleteComment(bioguide, type, username) {
 
   renderHTML();
 }
-
 /*****************/
 /* Event Handler */
 /*****************/
 $(function() {
+  var username;
+  var type;
+  var biogiode;
+  var updateTrueOrAddFalseFlag;
+
   $("#js-dropdown-submit").click(function(event) {
     event.preventDefault();
     var state = $(this).parent('#js-dropdown-form').find('select[name="states"] option:selected').val();
@@ -247,33 +251,24 @@ $(function() {
 
   $(".content").on("click", ".js-add-button", (function(event) {
     event.preventDefault();
-    var username = "eshirazp";
-    var comment = {
-      "username": username,
-      "name": "Elush Shirazpour",
-      "review": "hello add!"
-    };
-    var type = $(this).parent('.results-card').find('.con-type').text();
-    var bioguide = $(this).parent('.results-card').find('.con-biograde').text();
-    console.log(type);
-    console.log(bioguide);
-    createComment(bioguide, type, username, comment);
+    var usernameUpdate = "eshirazp";
+    var typeUpdate = $(this).parent('.results-card').find('.con-type').text();
+    var bioguideUpdate = $(this).parent('.results-card').find('.con-biograde').text();
+    username = usernameUpdate;
+    type = typeUpdate;
+    bioguide = bioguideUpdate;
+    updateTrueOrAddFalseFlag = false;
   }));
 
   $(".content").on("click", ".js-update-button", (function(event) {
     event.preventDefault();
-    var username = $(this).parent('.js-comments-list').find('.comment-username').text();
-    var type = $(this).parent('.js-comments-list').parent('.results-card').find('.con-type').text();
-    var bioguide = $(this).parent('.js-comments-list').parent('.results-card').find('.con-biograde').text();
-    var comment = {
-      "username": username,
-      "name": "Elush Shirazpour",
-      "review": "hello update!"
-    };
-    console.log(username);
-    console.log(type);
-    console.log(bioguide);
-    updateComment(bioguide, type, username, comment);
+    var usernameUpdate = $(this).parent('.js-comments-list').find('.comment-username').text();
+    var typeUpdate = $(this).parent('.js-comments-list').parent('.results-card').find('.con-type').text();
+    var bioguideUpdate = $(this).parent('.js-comments-list').parent('.results-card').find('.con-biograde').text();
+    username = usernameUpdate;
+    type = typeUpdate;
+    bioguide = bioguideUpdate;
+    updateTrueOrAddFalseFlag = true;
   }));
 
   $(".content").on("click", ".js-delete-button", (function(event) {
@@ -281,14 +276,22 @@ $(function() {
     var username = $(this).parent('.js-comments-list').find('.comment-username').text();
     var type = $(this).parent('.js-comments-list').parent('.results-card').find('.con-type').text();
     var bioguide = $(this).parent('.js-comments-list').parent('.results-card').find('.con-biograde').text();
-    console.log(username);
-    console.log(type);
-    console.log(bioguide);
     deleteComment(bioguide, type, username);
   }));
 
-  $('#buttonForModal').click(function() {
-      $('#myModal').reveal();  
+  $('.js-submit-modal').click(function(event) {
+    event.preventDefault();
+    var name = $(this).parent().find('.name').val();
+    var review = $(this).parent().find('.review').val();
+    comment = {
+      "username": username,
+      "name": name,
+      "review": review
+    };
+    if(updateTrueOrAddFalseFlag)
+      updateComment(bioguide, type, username, comment);
+    else
+      createComment(bioguide, type, username, comment);
   });
 });
 

@@ -4,6 +4,12 @@
  * foundation.zurb.com
  * Licensed under MIT Open Source
  */
+@media print, screen and (min-width: 40em) {
+  .reveal, .reveal.tiny, .reveal.small, .reveal.large {
+    right: auto;
+    left: auto;
+    margin: 0 auto; } }
+
 /*! normalize-scss | MIT/GPLv2 License | bit.ly/normalize-scss */
 /* Document
        ========================================================================== */
@@ -497,49 +503,96 @@ textarea {
 .is-hidden {
   display: none !important; }
 
-.callout {
-  position: relative;
-  margin: 0 0 1rem 0;
+body.is-reveal-open {
+  overflow: hidden; }
+
+html.is-reveal-open,
+html.is-reveal-open body {
+  min-height: 100%;
+  overflow: hidden;
+  position: fixed;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none; }
+
+.reveal-overlay {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 1005;
+  display: none;
+  background-color: rgba(10, 10, 10, 0.45);
+  overflow-y: scroll; }
+
+.reveal {
+  z-index: 1006;
+  -webkit-backface-visibility: hidden;
+          backface-visibility: hidden;
+  display: none;
   padding: 1rem;
-  border: 1px solid rgba(10, 10, 10, 0.25);
+  border: 1px solid #cacaca;
   border-radius: 3px;
-  background-color: white;
-  color: #0a0a0a; }
-  .callout > :first-child {
-    margin-top: 0; }
-  .callout > :last-child {
+  background-color: #fefefe;
+  position: relative;
+  top: 100px;
+  margin-right: auto;
+  margin-left: auto;
+  overflow-y: auto; }
+  [data-whatinput='mouse'] .reveal {
+    outline: 0; }
+  @media print, screen and (min-width: 40em) {
+    .reveal {
+      min-height: 0; } }
+  .reveal .column {
+    min-width: 0; }
+  .reveal > :last-child {
     margin-bottom: 0; }
-  .callout.primary {
-    background-color: #def2f8;
-    color: #0a0a0a; }
-  .callout.secondary {
-    background-color: #fcfcfc;
-    color: #0a0a0a; }
-  .callout.alert {
-    background-color: #fcd6d6;
-    color: #0a0a0a; }
-  .callout.success {
-    background-color: #e6f7d9;
-    color: #0a0a0a; }
-  .callout.warning {
-    background-color: #fff3d9;
-    color: #0a0a0a; }
-  .callout.body-font {
-    background-color: #dedede;
-    color: #0a0a0a; }
-  .callout.header {
-    background-color: #dedede;
-    color: #0a0a0a; }
-  .callout.small {
-    padding-top: 0.5rem;
-    padding-right: 0.5rem;
-    padding-bottom: 0.5rem;
-    padding-left: 0.5rem; }
-  .callout.large {
-    padding-top: 3rem;
-    padding-right: 3rem;
-    padding-bottom: 3rem;
-    padding-left: 3rem; }
+  @media print, screen and (min-width: 40em) {
+    .reveal {
+      width: 600px;
+      max-width: 62.5rem; } }
+  .reveal.collapse {
+    padding: 0; }
+  @media print, screen and (min-width: 40em) {
+    .reveal.tiny {
+      width: 30%;
+      max-width: 62.5rem; } }
+  @media print, screen and (min-width: 40em) {
+    .reveal.small {
+      width: 50%;
+      max-width: 62.5rem; } }
+  @media print, screen and (min-width: 40em) {
+    .reveal.large {
+      width: 90%;
+      max-width: 62.5rem; } }
+  .reveal.full {
+    top: 0;
+    left: 0;
+    width: 100%;
+    max-width: none;
+    height: 100%;
+    height: 100vh;
+    min-height: 100vh;
+    margin-left: 0;
+    border: 0;
+    border-radius: 0; }
+  @media screen and (max-width: 39.9375em) {
+    .reveal {
+      top: 0;
+      left: 0;
+      width: 100%;
+      max-width: none;
+      height: 100%;
+      height: 100vh;
+      min-height: 100vh;
+      margin-left: 0;
+      border: 0;
+      border-radius: 0; } }
+  .reveal.without-overlay {
+    position: fixed; }
 
 .grid-container {
   max-width: 62.5rem;
