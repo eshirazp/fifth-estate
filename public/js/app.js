@@ -32,7 +32,8 @@ var store = {
 function commentResults(comments) {
   var commentsListBeg = '<div class="js-comments-list">'
   var commentBeg='<div class="comment">';
-  var updateButton = '<button data-open="myModal" class="js-update-button comment-button update-button">Update</button>';
+  var updateButton = '<button data-open="myModal" data-id=${id} class="js-update-button comment-button update-button">Update</button>';
+  //var updateButton = (id) => `<button data-open="myModal" data-id=${id} class="js-update-button comment-button update-button">Update</button>`;
   var deleteButton = '<button class="js-delete-button comment-button delete-button">Delete</button>'
   var addButton = '<button data-open="myModal" class="js-add-button comment-button add-button">Add Comment</button>';
   var divEnd = '</div>';
@@ -131,11 +132,20 @@ function renderHTML() {
 /* Configure and Manipulate Store */
 /**********************************/
 function configureStore(state) {
+  var errorHandler = (err) => console.error("Could not get state congress: " + err);
   store.state = state;
-  store.sen = retrieveByState(store.state, "Senators");
-  store.rep = retrieveByState(store.state, "Representatives");
+  //store.sen = retrieveByState(store.state, "Senators");
+  var getSenState = retrieveByState(store.state, "Senators");
 
-  renderHTML();
+  //store.rep = retrieveByState(store.state, "Representatives");
+  var getRepState = retrieveByState(store.state, "Representatives");
+  Promise.all([getSenState, getRepState])
+  .then((arr) => {
+    store.sen = arr[0];
+    store.rep = arr[1];
+    renderHTML();
+  })
+  .catch(errorHandler);
 }
 
 function congressIdx(bioguide, type) {
@@ -210,6 +220,8 @@ function updateComment(bioguide, type, username, comment) {
   }
 
   renderHTML();
+  //updateCommentAPI();
+
 }
 
 function deleteComment(bioguide, type, username) {

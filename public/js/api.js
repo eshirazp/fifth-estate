@@ -316,7 +316,7 @@
     return legs[legIdx].comments;
   }
 
-  var updateComment = function(id, comment) {
+  var updateCommentAPI = function(id, comment) {
     let legIdx = findByIdIndex(id);
     if(legIdx === -1) { return; }
 
@@ -350,8 +350,8 @@
           arr.push(parseResult(congress[i]));
         }
       }
-      //Promise.resolve(arr);
-      return arr;
+      return Promise.resolve(arr);
+      //return arr;
     };
 
     var retrieveByRepresentative = function(congress) {
@@ -361,7 +361,8 @@
           arr.push(parseResult(congress[i]));
         }
       }
-      return arr;
+      return Promise.resolve(arr);
+      //return arr;
     };
 
     let arr = [];
