@@ -32,9 +32,8 @@ var store = {
 function commentResults(comments) {
   var commentsListBeg = '<div class="js-comments-list">'
   var commentBeg='<div class="comment">';
-  var updateButton = '<button data-open="myModal" data-id=${id} class="js-update-button comment-button update-button">Update</button>';
-  //var updateButton = (id) => `<button data-open="myModal" data-id=${id} class="js-update-button comment-button update-button">Update</button>`;
-  var deleteButton = '<button class="js-delete-button comment-button delete-button">Delete</button>'
+  var updateButton = (selectedUserName) => `<button data-open="myModal" data-username=${selectedUserName} class="js-update-button comment-button update-button">Update</button>`;
+  var deleteButton = (selectedUserName) => `<button data-username=${selectedUserName} class="js-delete-button comment-button delete-button">Delete</button>`;
   var addButton = '<button data-open="myModal" class="js-add-button comment-button add-button">Add Comment</button>';
   var divEnd = '</div>';
 
@@ -46,26 +45,23 @@ function commentResults(comments) {
   }
   for(var i=0; i < len; i++) {
     commentsHTML += commentsListBeg + commentBeg + '\
-    <p class="comment-username hidden">' + comments[i].username + '</p>'+ '\
     <p class="comment-text"><b>' + comments[i].name + '</b>: \
     <i>' + comments[i].review + '</i></p>' + '\
-    ' + divEnd + updateButton + deleteButton + divEnd;
+    ' + divEnd + updateButton(comments[i].username) + deleteButton(comments[i].username) + divEnd;
   }
   commentsHTML += addButton;
   return commentsHTML;
 }
 
 function senatorsResults() {
-  var cardSetupBeg = '<div class="results-card medium-2 small-3 cell">';
+  var cardSetupBeg = (selectedBioguide, selectedType) => `<div data-bioguide=${selectedBioguide} data-type=${selectedType} class="results-card medium-2 small-3 cell">`;
   var divEnd = '</div>';
   var senatorsHTML = "";
 
   for(var i=0; i < store.sen.length; i++) {
     var commentsHTML = commentResults(store.sen[i].comments);
 
-    senatorsHTML += cardSetupBeg + '\
-      <p class="con-type hidden">' + store.sen[i].type + '</p>' + '\
-      <p class="con-biograde hidden">' + store.sen[i].bioguide + '</p>' + '\
+    senatorsHTML += cardSetupBeg(store.sen[i].bioguide, store.sen[i].type) + '\
       <img src="https://theunitedstates.io/images/congress/original/D000598.jpg" alt="">' + '\
       <p class="results-text">' + store.sen[i].official_full + '</p>' + '\
       <p class="results-text">Senator</p>' + '\
@@ -78,16 +74,14 @@ function senatorsResults() {
 }
 
 function representativesResults() {
-  var cardSetupBeg = '<div class="results-card medium-2 small-3 cell">';
+  var cardSetupBeg = (selectedBioguide, selectedType) => `<div data-bioguide=${selectedBioguide} data-type=${selectedType} class="results-card medium-2 small-3 cell">`;
   var divEnd = '</div>';
   var representativesHTML = "";
 
   for(var i=0; i < store.rep.length; i++) {
     var commentsHTML = commentResults(store.rep[i].comments);
 
-    representativesHTML += cardSetupBeg + '\
-      <p class="con-type hidden">' + store.rep[i].type + '</p>' + '\
-      <p class="con-biograde hidden">' + store.rep[i].bioguide + '</p>' + '\
+    representativesHTML += cardSetupBeg(store.rep[i].bioguide, store.rep[i].type) + '\
       <img src="https://theunitedstates.io/images/congress/original/D000598.jpg" alt="">' + '\
       <p class="results-text">' + store.rep[i].official_full + '</p>' + '\
       <p class="results-text">Representative' + '\
@@ -192,29 +186,30 @@ function commentIdx(conIdx, type, username) {
   return -1;
 }
 
-function createComment(bioguide, type, username, comment) {
-  var conIdx = congressIdx(bioguide, type);
+function createComment(comment) {
+  var conIdx = congressIdx(store.currentBioguide, store.currentType);
 
-  if(type === 'sen') {
+  if(store.currentType === 'sen') {
     store.sen[conIdx].comments.push(comment);
   }
-  if(type === 'rep') {
+  if(store.currentType === 'rep') {
     store.rep[conIdx].comments.push(comment);
   }
 
+  console.log(store);
   renderHTML();
 }
 
-function updateComment(bioguide, type, username, comment) {
-  var conIdx = congressIdx(bioguide, type);
-  var comIdx = commentIdx(conIdx, type, username);
+function updateComment(comment) {
+  var conIdx = congressIdx(store.currentBioguide, store.currentType);
+  var comIdx = commentIdx(conIdx, store.currentType, store.currentUsername);
 
-  if(type === 'sen') {
+  if(store.currentType === 'sen') {
     store.sen[conIdx].comments[comIdx].name = comment.name;
     store.sen[conIdx].comments[comIdx].review = comment.review;
   }
 
-  if(type === 'rep') {
+  if(store.currentType === 'rep') {
     store.rep[conIdx].comments[comIdx].name = comment.name;
     store.rep[conIdx].comments[comIdx].review = comment.review;
   }
@@ -224,15 +219,15 @@ function updateComment(bioguide, type, username, comment) {
 
 }
 
-function deleteComment(bioguide, type, username) {
-  var conIdx = congressIdx(bioguide, type);
-  var comIdx = commentIdx(conIdx, type, username);
+function deleteComment() {
+  var conIdx = congressIdx(store.currentBioguide, store.currentType);
+  var comIdx = commentIdx(conIdx, store.currentType, store.currentUsername);
 
-  if(type === 'sen') {
+  if(store.currentType === 'sen') {
     store.sen[conIdx].comments.splice(comIdx, 1);
   }
 
-  if(type === 'rep') {
+  if(store.currentType === 'rep') {
     store.rep[conIdx].comments.splice(comIdx, 1);
   }
 
@@ -242,10 +237,7 @@ function deleteComment(bioguide, type, username) {
 /* Event Handler */
 /*****************/
 $(function() {
-  var username;
-  var type;
-  var biogiode;
-  var updateTrueOrAddFalseFlag;
+  var updateTrueOrCreateFalseFlag;
 
   $("#js-dropdown-submit").click(function(event) {
     event.preventDefault();
@@ -263,47 +255,41 @@ $(function() {
 
   $(".content").on("click", ".js-add-button", (function(event) {
     event.preventDefault();
-    var usernameUpdate = "eshirazp";
-    var typeUpdate = $(this).parent('.results-card').find('.con-type').text();
-    var bioguideUpdate = $(this).parent('.results-card').find('.con-biograde').text();
-    username = usernameUpdate;
-    type = typeUpdate;
-    bioguide = bioguideUpdate;
-    updateTrueOrAddFalseFlag = false;
+    store.currentUsername = "eshirazp";
+    store.currentBioguide = $(this).parent('.results-card').attr('data-bioguide');
+    store.currentType = $(this).parent('.results-card').attr('data-type');
+    updateTrueOrCreateFalseFlag = false;
   }));
 
   $(".content").on("click", ".js-update-button", (function(event) {
     event.preventDefault();
-    var usernameUpdate = $(this).parent('.js-comments-list').find('.comment-username').text();
-    var typeUpdate = $(this).parent('.js-comments-list').parent('.results-card').find('.con-type').text();
-    var bioguideUpdate = $(this).parent('.js-comments-list').parent('.results-card').find('.con-biograde').text();
-    username = usernameUpdate;
-    type = typeUpdate;
-    bioguide = bioguideUpdate;
-    updateTrueOrAddFalseFlag = true;
+    store.currentUsername = $(this).attr('data-username');
+    store.currentBioguide = $(this).parent('.js-comments-list').parent('.results-card').attr('data-bioguide');
+    store.currentType = $(this).parent('.js-comments-list').parent('.results-card').attr('data-type');
+    updateTrueOrCreateFalseFlag = true;
   }));
 
   $(".content").on("click", ".js-delete-button", (function(event) {
     event.preventDefault();
-    var username = $(this).parent('.js-comments-list').find('.comment-username').text();
-    var type = $(this).parent('.js-comments-list').parent('.results-card').find('.con-type').text();
-    var bioguide = $(this).parent('.js-comments-list').parent('.results-card').find('.con-biograde').text();
-    deleteComment(bioguide, type, username);
+    store.currentUsername = $(this).attr('data-username');
+    store.currentBioguide = $(this).parent('.js-comments-list').parent('.results-card').attr('data-bioguide');
+    store.currentType = $(this).parent('.js-comments-list').parent('.results-card').attr('data-type');
+    deleteComment();
   }));
 
   $('.js-submit-modal').click(function(event) {
-    event.preventDefault();
     var name = $(this).parent().find('.name').val();
     var review = $(this).parent().find('.review').val();
+    console.log(name + ": " + review);
     comment = {
-      "username": username,
+      "username": store.currentUsername,
       "name": name,
       "review": review
     };
-    if(updateTrueOrAddFalseFlag)
-      updateComment(bioguide, type, username, comment);
+    if(updateTrueOrCreateFalseFlag)
+      updateComment(comment);
     else
-      createComment(bioguide, type, username, comment);
+      createComment(comment);
   });
 });
 

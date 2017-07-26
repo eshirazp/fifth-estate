@@ -87,7 +87,9 @@ input {
   text-align: left;
   color: #002868;
   font-family: 'Josefin Slab', serif;
-  font-size: 16px;
+  font-size: 18px;
+  padding: 2px 5px;
+  margin-right: 5px;
 }
 
 p.comment-text {
@@ -100,20 +102,9 @@ p.comment-text {
   background-color: #4CAF50;
   color: white;
   font-size: 16px;
-}
-
-.update-button {
+  padding: 2px 5px;
   margin-right: 5px;
-}
-
-.add-button {
   text-align: center;
-}
-
-.comment-button-add {
-  background-color: #4CAF50;
-  color: white;
-  font-size: 16px;
 }
 
 div.results-card {
