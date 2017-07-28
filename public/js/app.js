@@ -62,7 +62,7 @@ function senatorsResults() {
     var commentsHTML = commentResults(store.sen[i].comments);
 
     senatorsHTML += cardSetupBeg(store.sen[i].bioguide, store.sen[i].type) + '\
-      <img src="https://theunitedstates.io/images/congress/original/D000598.jpg" alt="">' + '\
+      <img src="https://theunitedstates.io/images/congress/450x550/' + store.sen[i].bioguide + '.jpg" alt="">' + '\
       <p class="results-text">' + store.sen[i].official_full + '</p>' + '\
       <p class="results-text">Senator</p>' + '\
       <p class="results-text">' + store.sen[i].state + '</p>' + '\
@@ -82,7 +82,7 @@ function representativesResults() {
     var commentsHTML = commentResults(store.rep[i].comments);
 
     representativesHTML += cardSetupBeg(store.rep[i].bioguide, store.rep[i].type) + '\
-      <img src="https://theunitedstates.io/images/congress/original/D000598.jpg" alt="">' + '\
+      <img src="https://theunitedstates.io/images/congress/450x550/' + store.rep[i].bioguide + '.jpg" alt="">' + '\
       <p class="results-text">' + store.rep[i].official_full + '</p>' + '\
       <p class="results-text">Representative' + '\
       <p class="results-text">' + store.rep[i].state + '- District ' +  store.rep[i].district + '</p>' +  '\
@@ -128,11 +128,9 @@ function renderHTML() {
 function configureStore(state) {
   var errorHandler = (err) => console.error("Could not get state congress: " + err);
   store.state = state;
-  //store.sen = retrieveByState(store.state, "Senators");
   var getSenState = retrieveByState(store.state, "Senators");
-
-  //store.rep = retrieveByState(store.state, "Representatives");
   var getRepState = retrieveByState(store.state, "Representatives");
+
   Promise.all([getSenState, getRepState])
   .then((arr) => {
     store.sen = arr[0];

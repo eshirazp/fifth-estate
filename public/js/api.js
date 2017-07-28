@@ -309,7 +309,7 @@
     return parseResult(legs[legIdx]);
   };
 
-  var retrieveComments = function(id) {
+  var retrieveComments2 = function(id) {
     let legIdx = findByIdIndex(id);
     if(legIdx === -1) { return; }
 
@@ -340,38 +340,63 @@
   };
 
 
+  window.retrieveComments = function(id) {
+    var request = new Request('http://localhost:8080/legs/' + id, {
+      method: 'GET',
+      mode: 'cors',
+      redirect: 'follow',
+      headers: new Headers({
+        'Content-Type': 'application/json'
+      })
+    });
+
+    return fetch(request)
+    .then(function(response) {
+      response.json().then(function(arr) {
+        return Promise.resolve(arr);
+      });
+    });
+  }
+
   window.retrieveByState = function(state, type) {
 
     var retrieveBySenator = function(congress) {
       var arr = [];
 
       for(var i=0; i < congress.length; i++) {
-        if(congress[i].terms[congress[i].terms.length-1].type === "sen") {
-          arr.push(parseResult(congress[i]));
+        if(congress[i].type === "sen" && congress[i].state === state) {
+          arr.push(congress[i]);
         }
       }
       return Promise.resolve(arr);
-      //return arr;
     };
 
     var retrieveByRepresentative = function(congress) {
       var arr = [];
+
       for(var i=0; i < congress.length; i++) {
-        if(congress[i].terms[congress[i].terms.length-1].type === "rep") {
-          arr.push(parseResult(congress[i]));
+        if(congress[i].type === "rep" && congress[i].state === state) {
+          arr.push(congress[i]);
         }
       }
       return Promise.resolve(arr);
-      //return arr;
     };
 
-    let arr = [];
-    for(var i=0; i < legs.length; i++) {
-      if(legs[i].terms[legs[i].terms.length-1].state === state) {
-        arr.push(legs[i]);
-      }
-    }
-    if(type === "Senators") { return retrieveBySenator(arr); }
-    if(type === "Representatives") { return retrieveByRepresentative(arr); }
+    var request = new Request('http://localhost:8080/legs/', {
+    	method: 'GET',
+    	mode: 'cors',
+    	redirect: 'follow',
+    	headers: new Headers({
+    		'Content-Type': 'application/json'
+    	})
+    });
+
+    return fetch(request)
+    .then(function(response) {
+      return response.json().then(function(arr) {
+        if(type === "Senators") { return retrieveBySenator(arr); }
+        if(type === "Representatives") { return retrieveByRepresentative(arr); }
+      });
+    });
   }
 })();

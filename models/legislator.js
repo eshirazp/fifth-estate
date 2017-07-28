@@ -32,6 +32,28 @@ const commentsSchema = mongoose.Schema({
   "review": String
 });
 
+legislatorSchema.virtual('districtNum').get(function() {
+  var districtNum = this.terms[this.terms.length-1].district;
+
+  if(districtNum === 0)
+    return "At Large";
+
+  return this.terms[this.terms.length-1].district;
+});
+
+legislatorSchema.methods.apiRepr = function() {
+  return {
+    id: this._id,
+    bioguide: this.usid.bioguide,
+    official_full: this.name.official_full,
+    type: this.terms[this.terms.length-1].type,
+    state: this.terms[this.terms.length-1].state,
+    district: this.districtNum,
+    party: this.terms[this.terms.length-1].party,
+    comments: this.comments
+  };
+}
+
 const Comment = mongoose.model('Comment', commentsSchema);
 const Legislator = mongoose.model('Legislator', legislatorSchema);
 

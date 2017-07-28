@@ -76,7 +76,9 @@ router.get('/', (req, res) => {
   Legislator
     .find()
     .exec()
-    .then(congress => res.status(200).json(congress))
+    .then(congress => {
+      res.json(congress.map(con => con.apiRepr()));
+    })
     .catch(err => res.status(500).json({message: 'Something went wrong'}));
 });
 
@@ -108,8 +110,6 @@ router.post('/:id', jsonParser, (req,res) => {
 
 //Retrieve all comments for single member of Congress
 router.get('/:id', (req,res) => {
-  var arr = [];
-
   Comment
   .find({usid: req.params.id})
   .exec()
@@ -119,8 +119,6 @@ router.get('/:id', (req,res) => {
 
 //Retrieve username comments for single member of Congress
 router.get('/:id/:username', (req,res) => {
-  var arr = [];
-
   Comment
   .find({usid: req.params.id, username: req.params.username})
   .exec()
