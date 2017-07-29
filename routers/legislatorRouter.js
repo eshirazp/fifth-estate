@@ -8,70 +8,9 @@ const jsonParser = bodyParser.json();
 
 const {Comment, Legislator} = require('../models/legislator');
 
-/************************************/
-/* CRUD for each member of Congress */
-/************************************/
-// router.post('/', jsonParser, (req,res) => {
-//   const requiredFields = ["usid", "name"];
-//   for(let i=0; i < requiredFields.length; i++) {
-//     const field = requiredFields[i];
-//     if(!(field in req.body)) {
-//       const message = `Missing \`${field}\` in request body`
-//       console.error(message);
-//       return res.status(400).send(req.body);
-//     }
-//   }
-//   Legislator.create({
-//     usid: req.body.usid,
-//     name: req.body.name
-//   })
-//   .then(president => res.status(201).json(president))
-//   .catch(err => {
-//         console.error(err);
-//         res.status(500).json({error: 'Something went wrong'});
-//     });
-// });
-// router.get('/:state', (req, res) => {
-//   var arr = [];
-//
-//   Legislator
-//     .find()
-//     .exec()
-//     .then(congress => {
-//       for(var i=0; i < congress.length; i++) {
-//         if(congress[i].terms[0].state == req.params.state)
-//           arr.push(congress[i]);
-//       }
-//       res.status(200).json(arr);
-//     })
-//     .catch(err => {
-//       console.error(err);
-//       res.status(500).json({error: 'Could not get list of Congress'});
-//     });
-// });
-// router.put('/:id', jsonParser, (req,res) => {
-//   const updated = {};
-//   const updateableFields = ["usid", "name"];
-//   updateableFields.forEach(field => {
-//     if (field in req.body) {
-//       updated[field] = req.body[field];
-//     }
-//   });
-//   Executive
-//     .findByIdAndUpdate(req.params.id, {$set: updated}, {new: true})
-//     .exec()
-//     .then(president => res.status(201).json(president))
-//     .catch(err => res.status(500).json({message: 'Could not update'}));
-// });
-// router.delete('/:id', (req, res) => {
-//   Executive.findByIdAndRemove(req.params.id)
-//   .exec()
-//   .then(() => res.status(204).json({message: 'success'}))
-//   .catch(err => {
-//     console.error(err);
-//     res.status(500).json({error: 'Could not delete'});
-//   });
-// });
+/****************************************/
+/* Retrieve for each member of Congress */
+/****************************************/
 router.get('/', (req, res) => {
   Legislator
     .find()

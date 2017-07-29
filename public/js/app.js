@@ -1,30 +1,7 @@
 const ENTER_KEY = 13;
 const MAX_COMMENTS = 5;
 
-var store = {
-  // "state": "ca",
-  // "sen": [
-  //   {
-  //      comments: [
-  //        {
-  //        },
-  //        {
-  //        }
-  //      ]
-  //   },
-  //   {
-  //
-  //   }
-  // ],
-  // "rep": [
-  //   {
-  //
-  //   },
-  //   {
-  //
-  //   }
-  // ]
-};
+var store = {};
 
 /*********************************************/
 /* Acquire State HTML Strings for renderHTML */
@@ -135,7 +112,6 @@ function configureStore(state) {
   .then((arr) => {
     store.sen = arr[0];
     store.rep = arr[1];
-    console.log(store);
     renderHTML();
   })
   .catch(errorHandler);
@@ -294,22 +270,3 @@ $(function() {
       createComment(comment);
   });
 });
-
-var debugCRUD = function() {
-  var exampleComment1_1 = {"name": "Sean Delshad", "review": "no man!"};
-  var exampleComment1_2 = {"name": "Sean Delshad", "review": "I can do better"};
-  var exampleComment2_1 = {"name": "Josh Yacoby", "review": "He wants to raise health insurance"};
-
-  console.log(retrieveAll());
-  console.log(retrieveOne(12345));
-  console.log(createComment(12345, exampleComment1_1));
-  console.log(retrieveComments(12345));
-  console.log(updateComment(12345, exampleComment1_2));
-  console.log(updateComment(12345, exampleComment2_1));
-  console.log(deleteComment(12345, exampleComment1_2));
-
-  console.log("Senators");
-  console.log(retrieveByState("CA", "Senators"));
-  console.log("Representatives");
-  console.log(retrieveByState("CA", "Representatives"));
-}
