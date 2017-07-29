@@ -32,8 +32,8 @@ var store = {
 function commentResults(comments) {
   var commentsListBeg = '<div class="js-comments-list">'
   var commentBeg='<div class="comment">';
-  var updateButton = (selectedUserName) => `<button data-open="myModal" data-username=${selectedUserName} class="js-update-button comment-button update-button">Update</button>`;
-  var deleteButton = (selectedUserName) => `<button data-username=${selectedUserName} class="js-delete-button comment-button delete-button">Delete</button>`;
+  var updateButton = (selectedUserName, selectedCommentID) => `<button data-open="myModal" data-username=${selectedUserName} data-cid=${selectedCommentID} class="js-update-button comment-button update-button">Update</button>`;
+  var deleteButton = (selectedUserName, selectedCommentID) => `<button data-username=${selectedUserName} data-cid=${selectedCommentID} class="js-delete-button comment-button delete-button">Delete</button>`;
   var addButton = '<button data-open="myModal" class="js-add-button comment-button add-button">Add Comment</button>';
   var divEnd = '</div>';
 
@@ -47,21 +47,21 @@ function commentResults(comments) {
     commentsHTML += commentsListBeg + commentBeg + '\
     <p class="comment-text"><b>' + comments[i].name + '</b>: \
     <i>' + comments[i].review + '</i></p>' + '\
-    ' + divEnd + updateButton(comments[i].username) + deleteButton(comments[i].username) + divEnd;
+    ' + divEnd + updateButton(comments[i].username, comments[i]._id) + deleteButton(comments[i].username, comments[i]._id) + divEnd;
   }
   commentsHTML += addButton;
   return commentsHTML;
 }
 
 function senatorsResults() {
-  var cardSetupBeg = (selectedBioguide, selectedType) => `<div data-bioguide=${selectedBioguide} data-type=${selectedType} class="results-card medium-2 small-3 cell">`;
+  var cardSetupBeg = (selectedID, selectedType) => `<div data-id=${selectedID} data-type=${selectedType} class="results-card medium-2 small-3 cell">`;
   var divEnd = '</div>';
   var senatorsHTML = "";
 
   for(var i=0; i < store.sen.length; i++) {
     var commentsHTML = commentResults(store.sen[i].comments);
 
-    senatorsHTML += cardSetupBeg(store.sen[i].bioguide, store.sen[i].type) + '\
+    senatorsHTML += cardSetupBeg(store.sen[i].id, store.sen[i].type) + '\
       <img src="https://theunitedstates.io/images/congress/450x550/' + store.sen[i].bioguide + '.jpg" alt="">' + '\
       <p class="results-text">' + store.sen[i].official_full + '</p>' + '\
       <p class="results-text">Senator</p>' + '\
@@ -74,14 +74,14 @@ function senatorsResults() {
 }
 
 function representativesResults() {
-  var cardSetupBeg = (selectedBioguide, selectedType) => `<div data-bioguide=${selectedBioguide} data-type=${selectedType} class="results-card medium-2 small-3 cell">`;
+  var cardSetupBeg = (selectedID, selectedType) => `<div data-id=${selectedID} data-type=${selectedType} class="results-card medium-2 small-3 cell">`;
   var divEnd = '</div>';
   var representativesHTML = "";
 
   for(var i=0; i < store.rep.length; i++) {
     var commentsHTML = commentResults(store.rep[i].comments);
 
-    representativesHTML += cardSetupBeg(store.rep[i].bioguide, store.rep[i].type) + '\
+    representativesHTML += cardSetupBeg(store.rep[i].id, store.rep[i].type) + '\
       <img src="https://theunitedstates.io/images/congress/450x550/' + store.rep[i].bioguide + '.jpg" alt="">' + '\
       <p class="results-text">' + store.rep[i].official_full + '</p>' + '\
       <p class="results-text">Representative' + '\
@@ -140,10 +140,10 @@ function configureStore(state) {
   .catch(errorHandler);
 }
 
-function congressIdx(bioguide, type) {
+function congressIdx(id, type) {
   if(type === "sen") {
     for(var i=0; i < store.sen.length; i++) {
-      if(store.sen[i].bioguide === bioguide) {
+      if(store.sen[i].id === id) {
         return i;
       }
     }
@@ -152,7 +152,7 @@ function congressIdx(bioguide, type) {
 
   if(type === "rep") {
     for(var i=0; i < store.rep.length; i++) {
-      if(store.rep[i].bioguide === bioguide) {
+      if(store.rep[i].id === id) {
         return i;
       }
     }
@@ -162,10 +162,10 @@ function congressIdx(bioguide, type) {
   return -1;
 }
 
-function commentIdx(conIdx, type, username) {
+function commentIdx(conIdx, type, commentID) {
   if(type === "sen") {
     for(var i=0; i < store.sen[conIdx].comments.length; i++) {
-      if(store.sen[conIdx].comments[i].username === username) {
+      if(store.sen[conIdx].comments[i]._id === commentID) {
         return i;
       }
     }
@@ -185,7 +185,7 @@ function commentIdx(conIdx, type, username) {
 }
 
 function createComment(comment) {
-  var conIdx = congressIdx(store.currentBioguide, store.currentType);
+  var conIdx = congressIdx(store.currentID, store.currentType);
 
   if(store.currentType === 'sen') {
     store.sen[conIdx].comments.push(comment);
@@ -194,13 +194,12 @@ function createComment(comment) {
     store.rep[conIdx].comments.push(comment);
   }
 
-  console.log(store);
   renderHTML();
 }
 
 function updateComment(comment) {
-  var conIdx = congressIdx(store.currentBioguide, store.currentType);
-  var comIdx = commentIdx(conIdx, store.currentType, store.currentUsername);
+  var conIdx = congressIdx(store.currentID, store.currentType);
+  var comIdx = commentIdx(conIdx, store.currentType, store.currentCommentID);
 
   if(store.currentType === 'sen') {
     store.sen[conIdx].comments[comIdx].name = comment.name;
@@ -218,8 +217,8 @@ function updateComment(comment) {
 }
 
 function deleteComment() {
-  var conIdx = congressIdx(store.currentBioguide, store.currentType);
-  var comIdx = commentIdx(conIdx, store.currentType, store.currentUsername);
+  var conIdx = congressIdx(store.currentID, store.currentType);
+  var comIdx = commentIdx(conIdx, store.currentType, store.currentCommentID);
 
   if(store.currentType === 'sen') {
     store.sen[conIdx].comments.splice(comIdx, 1);
@@ -254,7 +253,7 @@ $(function() {
   $(".content").on("click", ".js-add-button", (function(event) {
     event.preventDefault();
     store.currentUsername = "eshirazp";
-    store.currentBioguide = $(this).parent('.results-card').attr('data-bioguide');
+    store.currentID = $(this).parent('.results-card').attr('data-id');
     store.currentType = $(this).parent('.results-card').attr('data-type');
     updateTrueOrCreateFalseFlag = false;
   }));
@@ -262,7 +261,8 @@ $(function() {
   $(".content").on("click", ".js-update-button", (function(event) {
     event.preventDefault();
     store.currentUsername = $(this).attr('data-username');
-    store.currentBioguide = $(this).parent('.js-comments-list').parent('.results-card').attr('data-bioguide');
+    store.currentCommentID = $(this).attr('data-cid');
+    store.currentID = $(this).parent('.js-comments-list').parent('.results-card').attr('data-id');
     store.currentType = $(this).parent('.js-comments-list').parent('.results-card').attr('data-type');
     updateTrueOrCreateFalseFlag = true;
   }));
@@ -270,7 +270,8 @@ $(function() {
   $(".content").on("click", ".js-delete-button", (function(event) {
     event.preventDefault();
     store.currentUsername = $(this).attr('data-username');
-    store.currentBioguide = $(this).parent('.js-comments-list').parent('.results-card').attr('data-bioguide');
+    store.currentCommentID = $(this).attr('data-cid');
+    store.currentID = $(this).parent('.js-comments-list').parent('.results-card').attr('data-id');
     store.currentType = $(this).parent('.js-comments-list').parent('.results-card').attr('data-type');
     deleteComment();
   }));
@@ -278,8 +279,8 @@ $(function() {
   $('.js-submit-modal').click(function(event) {
     var name = $(this).parent().find('.name').val();
     var review = $(this).parent().find('.review').val();
-    console.log(name + ": " + review);
     comment = {
+      "_id": store.currentCommentID,
       "username": store.currentUsername,
       "name": name,
       "review": review
