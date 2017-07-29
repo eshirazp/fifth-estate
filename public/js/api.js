@@ -327,15 +327,17 @@
     return parseResult(legs[legIdx]);
   };
 
-  var deleteComment = function(id, comment) {
-    let legIdx = findByIdIndex(id);
-    if(legIdx === -1) { return; }
+  window.deleteCommentAPI = function(id, cid, username) {
+    var request = new Request('http://localhost:8080/legs/' + id + '/' + cid, {
+      method: 'DELETE',
+      mode: 'cors',
+      redirect: 'follow',
+      headers: new Headers({
+        'Content-Type': 'application/json'
+      })
+    });
 
-    let newCommentIdx = retrieveExistingComment(legs[legIdx],comment);
-    if(newCommentIdx === -1) { return; }
-
-    legs[legIdx].comments.splice(newCommentIdx, 1);
-    return parseResult(legs[legIdx]);
+    return fetch(request);
   };
 
 

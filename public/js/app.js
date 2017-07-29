@@ -227,7 +227,7 @@ function deleteComment() {
   if(store.currentType === 'rep') {
     store.rep[conIdx].comments.splice(comIdx, 1);
   }
-
+  deleteCommentAPI(store.currentID, store.currentCommentID, store.currentUsername);
   renderHTML();
 }
 /*****************/
