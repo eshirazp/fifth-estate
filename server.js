@@ -5,7 +5,6 @@ const mongoose = require('mongoose');
 const morgan = require('morgan');
 
 const {connectDB, gracefulShutdown} = require('./models/connectDB');
-const executiveRouter = require('./routers/executiveRouter');
 const legislatorRouter = require('./routers/legislatorRouter');
 
 const {DATABASE_URL, PORT} = require('./config');
@@ -17,7 +16,6 @@ app.use(express.static('public'));
 app.get('/', (req, res) => {
   res.sendFile(__dirname + '/public/views/index.html');
 });
-app.use('/prez', executiveRouter);
 app.use('/legs', legislatorRouter);
 
 let server;
