@@ -227,7 +227,6 @@
       ]
     }
   ]
-
   /********************/
   /* Helper Functions */
   /********************/
@@ -340,7 +339,7 @@
   };
 
 
-  window.retrieveComments = function(id) {
+  var retrieveComments = function(id) {
     var request = new Request('http://localhost:8080/legs/' + id, {
       method: 'GET',
       mode: 'cors',
@@ -352,7 +351,7 @@
 
     return fetch(request)
     .then(function(response) {
-      response.json().then(function(arr) {
+      return response.json().then(function(arr) {
         return Promise.resolve(arr);
       });
     });
@@ -361,25 +360,61 @@
   window.retrieveByState = function(state, type) {
 
     var retrieveBySenator = function(congress) {
-      var arr = [];
+      var commentList = [];
 
       for(var i=0; i < congress.length; i++) {
         if(congress[i].type === "sen" && congress[i].state === state) {
-          arr.push(congress[i]);
+          commentList.push(retrieveComments(congress[i].id));
         }
       }
-      return Promise.resolve(arr);
+
+      return Promise.all(commentList)
+      .then((com) => {
+        var arr = [];
+
+        for(var i=0; i < congress.length; i++) {
+          if(congress[i].type === "sen" && congress[i].state === state) {
+            if(com[i]) {
+              congress[i].comments = com[i];
+            }
+            else {
+              congress[i].comments = [];
+            }
+            arr.push(congress[i]);
+          }
+        }
+
+        return Promise.resolve(arr);
+      });
     };
 
     var retrieveByRepresentative = function(congress) {
-      var arr = [];
+      var commentList = [];
 
       for(var i=0; i < congress.length; i++) {
         if(congress[i].type === "rep" && congress[i].state === state) {
-          arr.push(congress[i]);
+          commentList.push(retrieveComments(congress[i].id));
         }
       }
-      return Promise.resolve(arr);
+
+      return Promise.all(commentList)
+      .then((com) => {
+        var arr = [];
+
+        for(var i=0; i < congress.length; i++) {
+          if(congress[i].type === "rep" && congress[i].state === state) {
+            if(com[i]) {
+              congress[i].comments = com[i];
+            }
+            else {
+              congress[i].comments = [];
+            }
+            arr.push(congress[i]);
+          }
+        }
+
+        return Promise.resolve(arr);
+      });
     };
 
     var request = new Request('http://localhost:8080/legs/', {
