@@ -135,6 +135,7 @@ function configureStore(state) {
   .then((arr) => {
     store.sen = arr[0];
     store.rep = arr[1];
+    console.log(store);
     renderHTML();
   })
   .catch(errorHandler);
@@ -174,7 +175,7 @@ function commentIdx(conIdx, type, commentID) {
 
   if(type === "rep") {
     for(var i=0; i < store.rep[conIdx].comments.length; i++) {
-      if(store.rep[conIdx].comments[i].username === username) {
+      if(store.rep[conIdx].comments[i]._id === commentID) {
         return i;
       }
     }
@@ -194,6 +195,7 @@ function createComment(comment) {
     store.rep[conIdx].comments.push(comment);
   }
 
+  createCommentAPI(store.currentID, comment);
   renderHTML();
 }
 
@@ -211,9 +213,8 @@ function updateComment(comment) {
     store.rep[conIdx].comments[comIdx].review = comment.review;
   }
 
+  updateCommentAPI(store.currentID, store.currentCommentID, comment);
   renderHTML();
-  //updateCommentAPI();
-
 }
 
 function deleteComment() {
@@ -227,9 +228,11 @@ function deleteComment() {
   if(store.currentType === 'rep') {
     store.rep[conIdx].comments.splice(comIdx, 1);
   }
+
   deleteCommentAPI(store.currentID, store.currentCommentID, store.currentUsername);
   renderHTML();
 }
+
 /*****************/
 /* Event Handler */
 /*****************/

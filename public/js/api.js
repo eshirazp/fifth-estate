@@ -298,33 +298,31 @@
     return -1;
   };
 
-  var createComment = function(id, comment) {
-    let legIdx = findByIdIndex(id);
-    if(legIdx === -1) { return; }
-
-    if(!(checkRequiredFieldsComments(comment))) { return; }
-
-    legs[legIdx].comments.push(comment);
-    return parseResult(legs[legIdx]);
+  window.createCommentAPI = function(id, comment) {
+    var request = new Request('http://localhost:8080/legs/' + id, {
+      method: 'POST',
+      body: JSON.stringify(comment),
+      mode: 'cors',
+      redirect: 'follow',
+      headers: new Headers({
+        'Content-Type': 'application/json'
+      })
+    });
+    return fetch(request);
   };
 
-  var retrieveComments2 = function(id) {
-    let legIdx = findByIdIndex(id);
-    if(legIdx === -1) { return; }
+  window.updateCommentAPI = function(id, cid, comment) {
+    var request = new Request('http://localhost:8080/legs/' + id + '/' + cid, {
+      method: 'PUT',
+      body: JSON.stringify(comment),
+      mode: 'cors',
+      redirect: 'follow',
+      headers: new Headers({
+        'Content-Type': 'application/json'
+      })
+    });
 
-    return legs[legIdx].comments;
-  }
-
-  var updateCommentAPI = function(id, comment) {
-    let legIdx = findByIdIndex(id);
-    if(legIdx === -1) { return; }
-
-    if(!(checkRequiredFieldsComments(comment))) { return; }
-
-    let newCommentIdx = retrieveExistingComment(legs[legIdx],comment);
-    if(newCommentIdx === -1) { return; }
-    legs[legIdx].comments[newCommentIdx] = comment;
-    return parseResult(legs[legIdx]);
+    return fetch(request);
   };
 
   window.deleteCommentAPI = function(id, cid, username) {
@@ -357,7 +355,7 @@
         return Promise.resolve(arr);
       });
     });
-  }
+  };
 
   window.retrieveByState = function(state, type) {
 
@@ -374,13 +372,11 @@
       .then((com) => {
         var arr = [];
 
+        var idx = -1;
         for(var i=0; i < congress.length; i++) {
           if(congress[i].type === "sen" && congress[i].state === state) {
-            if(com[i]) {
-              congress[i].comments = com[i];
-            }
-            else {
-              congress[i].comments = [];
+            if(com[++idx]) {
+              congress[i].comments = com[idx];
             }
             arr.push(congress[i]);
           }
@@ -403,13 +399,11 @@
       .then((com) => {
         var arr = [];
 
+        var idx = -1;
         for(var i=0; i < congress.length; i++) {
           if(congress[i].type === "rep" && congress[i].state === state) {
-            if(com[i]) {
-              congress[i].comments = com[i];
-            }
-            else {
-              congress[i].comments = [];
+            if(com[++idx]) {
+              congress[i].comments = com[idx];
             }
             arr.push(congress[i]);
           }
