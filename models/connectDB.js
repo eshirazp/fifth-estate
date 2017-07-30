@@ -1,12 +1,11 @@
-const {DATABASE_URL} = require('../config');
 var mongoose = require('mongoose');
 
 mongoose.Promise = global.Promise;
 
-function connectDB() {
-  return mongoose.connect(DATABASE_URL, {useMongoClient: true})
+function connectDB(databaseUrl) {
+  return mongoose.connect(databaseUrl, {useMongoClient: true})
   .then(() => {
-    console.log('Mongoose connected to ' + DATABASE_URL);
+    console.log('Mongoose connected to ' + databaseUrl);
     mongoose.connection.on('disconnected', () => console.log('Mongoose disconnected'));
   })
   .catch((err) => {

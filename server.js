@@ -21,7 +21,7 @@ app.use('/legs', legislatorRouter);
 let server;
 function runServer(databaseUrl=DATABASE_URL, port=PORT) {
   return new Promise((resolve, reject) => {
-    connectDB().then(() => {
+    connectDB(databaseUrl).then(() => {
       server = app.listen(port, () => {
         console.log(`Your app is listening on port ${port}`);
         resolve();
