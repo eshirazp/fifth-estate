@@ -5,7 +5,7 @@
   /* CRUD for Comments */
   /*********************/
   window.createCommentAPI = function(id, comment) {
-    var request = new Request('http://localhost:8080/legs/' + id, {
+    var request = new Request('/legs/' + id, {
       method: 'POST',
       body: JSON.stringify(comment),
       mode: 'cors',
@@ -18,7 +18,7 @@
   };
 
   var retrieveComments = function(id) {
-    var request = new Request('http://localhost:8080/legs/' + id, {
+    var request = new Request('/legs/' + id, {
       method: 'GET',
       mode: 'cors',
       redirect: 'follow',
@@ -36,7 +36,7 @@
   };
 
   window.updateCommentAPI = function(id, cid, comment) {
-    var request = new Request('http://localhost:8080/legs/' + id + '/' + cid, {
+    var request = new Request('/legs/' + id + '/' + cid, {
       method: 'PUT',
       body: JSON.stringify(comment),
       mode: 'cors',
@@ -50,7 +50,7 @@
   };
 
   window.deleteCommentAPI = function(id, cid, username) {
-    var request = new Request('http://localhost:8080/legs/' + id + '/' + cid, {
+    var request = new Request('/legs/' + id + '/' + cid, {
       method: 'DELETE',
       mode: 'cors',
       redirect: 'follow',
@@ -121,7 +121,7 @@
       });
     };
 
-    var request = new Request('http://localhost:8080/legs/', {
+    var request = new Request('/legs/', {
     	method: 'GET',
     	mode: 'cors',
     	redirect: 'follow',

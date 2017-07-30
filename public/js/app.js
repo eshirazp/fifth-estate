@@ -258,6 +258,7 @@ $(function() {
   $('.js-submit-modal').click(function(event) {
     var name = $(this).parent().find('.name').val();
     var review = $(this).parent().find('.review').val();
+    console.log(name);
     comment = {
       "_id": store.currentCommentID,
       "username": store.currentUsername,

@@ -47,6 +47,10 @@ router.post('/:id', jsonParser, (req,res) => {
   .catch(err => res.status(500).json({message: 'Something went wrong'}));
 });
 
+function getCommentsForSingleCongress(id) {
+  return Comment.find({usid: id}).exec();
+}
+
 //Retrieve all comments for single member of Congress
 router.get('/:id', (req,res) => {
   Comment
