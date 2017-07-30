@@ -69,7 +69,7 @@ function seedCommentData() {
   return Comment.insertMany(seedData);
 }
 
-describe('Legislator Model', function() {
+describe('Legislator API', function() {
 
   before(function() {
     return runServer(TEST_DATABASE_URL);
@@ -99,7 +99,7 @@ describe('Legislator Model', function() {
   });
 });
 
-describe('Comment Model', function() {
+describe('Comment API', function() {
 
   before(function() {
     return runServer(TEST_DATABASE_URL);
