@@ -143,13 +143,14 @@ input.modal-input {
   font-family: 'Josefin Slab', serif;
   font-size: 16px;
   font-weight: bold;
+}
 
+.modal-warning {
+  color: #BF0A30;
 }
 
 .modal-label {
   color: #002868;
-
-  font-weight: bold;
 }
 
 .modal-button {
