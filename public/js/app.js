@@ -264,6 +264,9 @@ $(function() {
       "name": name,
       "review": review
     };
+    if(name.trim() === "" || review.trim() === "") {
+      return;
+    }
     if(updateTrueOrCreateFalseFlag)
       updateComment(comment);
     else

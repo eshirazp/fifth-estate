@@ -9,17 +9,20 @@ body, html {
 }
 
 img {
-  height: auto;
   width: 100%;
-  border-radius: 50%;
+  height: auto;
+
   border: 1px solid #002868;
+  border-radius: 50%;
 }
 
 .title-banner {
   position: relative;
+
+  overflow: hidden;
+
   width: 100%;
   max-height: 800px;
-  overflow: hidden;
 }
 
 #banner-video {
@@ -33,9 +36,10 @@ video::-webkit-media-controls {
 #banner-opaque {
   position: absolute;
   top: 0;
-  left: 0;
-  bottom: 0;
   right: 0;
+  bottom: 0;
+  left: 0;
+
   background-color: rgba(0, 0, 0, .5);
 }
 
@@ -43,7 +47,9 @@ video::-webkit-media-controls {
   position: absolute;
   top: 10%;
   left: 40%;
+
   color: #BF0A30;
+
   font-family: 'Comfortaa', cursive;
   font-size: 48px;
 }
@@ -67,14 +73,17 @@ input {
 }
 
 .results-headers {
-  font-family: 'Cinzel', serif;
   color: #002868;
+
+  font-family: 'Cinzel', serif;
   font-size: 30px;
 }
 
 .results-text {
   text-align: center;
+
   color: #BF0A30;
+
   font-family: 'Zilla Slab', serif;
   font-size: 22px;
 }
@@ -84,12 +93,15 @@ input {
 }
 
 .comment-text {
+  margin-right: 5px;
+  padding: 2px 5px;
+
   text-align: left;
+
   color: #002868;
+
   font-family: 'Josefin Slab', serif;
   font-size: 18px;
-  padding: 2px 5px;
-  margin-right: 5px;
 }
 
 p.comment-text {
@@ -99,12 +111,16 @@ p.comment-text {
 
 .comment-button {
   display: inline-block;
-  background-color: #4CAF50;
-  color: white;
-  font-size: 16px;
-  padding: 2px 5px;
+
   margin-right: 5px;
+  padding: 2px 5px;
+
   text-align: center;
+
+  color: white;
+  background-color: #4CAF50;
+
+  font-size: 16px;
 }
 
 div.results-card {
@@ -116,10 +132,35 @@ p.results-text {
   margin: 0;
 }
 
+input.modal-input {
+  margin-right: 10px;
+  margin-bottom: 10px;
+  margin-left: 5px;
+  padding: 5px;
+}
+
+.modal-text {
+  font-family: 'Josefin Slab', serif;
+  font-size: 16px;
+  font-weight: bold;
+
+}
+
+.modal-label {
+  color: #002868;
+
+  font-weight: bold;
+}
+
 .modal-button {
   display: inline-block;
-  background-color: #4CAF50;
+
+  margin-right: 5px;
+  padding: 2px 5px;
+
   color: white;
+  background-color: #BF0A30;
+
   font-size: 18px;
 }
 
