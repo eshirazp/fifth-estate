@@ -1,2 +1,9 @@
 language: node_js
 node_js: node
+deploy:
+  provider: heroku
+  api_key:
+    secure: c9iGTo2ATYar3OZU//MrH33KTwtFfsLdCQUXgDb+ILxKCo/YPBVjaCq7qqEmuSh/PNi4XroA8DlNS5Opnmj/Oltm5lbWPwj2t/U9vBkaf4rTJnJiFbKzDMTvFa5Y+2sIw7bAmAyAW65yaL8Fs+0U0HqXeixvzYOsZ45gz1OezKQfhF3I05fCjFUevDYdEMFV2nd5buNIDn1dFZCVDYGL+Uimb+ejElLD0Vvr9eSTWUDsZlCf8YyAamOk9/IJgWwrFtZKb2ZCNJRZ1OmTvHKf5NSNJlYZQ9PsOnurSeZZ8ZZ9Bn2qONAuXhAKcfTpk+5vNdm2QAtkYbmgyGv1CCY5asAFtzM35BnSSmpo5UQC6oo6Fh++3sMW1nsrdfYubGn1HG8W1s9EC8mc6+zvM192AMl/eyhcy8M4xwmY7/iBdwZX2dfZZuT2pWzAd3eai5vUrzr3eyMFKUnYhcc01+WECYkpzWbuBKzXZxwBU1RdsCPPMov+MDaiGShp2aI9J3ciYlQ/VLoWpn99GUjtOlQWjgB+3Xitox7d02ni61jq0gqPxI56xriWhGQ0WQIP4oLeJ2eLyg8IDTOz8Y968Xj11vIQiSEqGmoURVlKycrDHH5xubCtZXkEALaG26iSyVIDqvacdOT5BoImxADr35gvVcYl8KiKrRDNrzPBEIos8mk=
+  app: aqueous-tundra-94039
+  on:
+    repo: eshirazp/fifth-estate
