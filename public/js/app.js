@@ -92,9 +92,14 @@ function renderHTML() {
   $('.js-senators-div').empty();
   $('.js-representatives-div').empty();
 
+  revealSearching();
   revealResultsHeaders();
   $('.js-senators-div').html(senatorsHTML);
   $('.js-representatives-div').html(representativesHTML);
+
+  setTimeout(function() {
+    hideSearching();
+  }, 1000);
 }
 
 /**********************************/
@@ -216,18 +221,14 @@ $(function() {
   $("#js-dropdown-submit").click(function(event) {
     event.preventDefault();
     var state = $(this).parent('#js-dropdown-form').find('select[name="states"] option:selected').val();
-    revealSearching();
     configureStore(state);
-    hideSearching();
   });
 
   $("#js-dropdown-form").keypress(function(event) {
     if(event === ENTER_KEY) {
       event.preventDefault();
       var state = $(this).find('select[name="states"] option:selected').val();
-      revealSearching();
       configureStore(state);
-      hideSearching();
     }
   });
 
