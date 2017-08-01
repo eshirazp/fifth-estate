@@ -3,6 +3,8 @@
 var mongoose = require('mongoose')
   , Schema = mongoose.Schema
 
+mongoose.Promise = global.Promise;
+
   const legislatorSchema = mongoose.Schema ({
     "usid": {
       "bioguide": String,
@@ -54,7 +56,15 @@ legislatorSchema.methods.apiRepr = function() {
   };
 }
 
+function getAllCongressMembers() {
+  return Legislator.find().exec()
+}
+
 const Comment = mongoose.model('Comment', commentsSchema);
 const Legislator = mongoose.model('Legislator', legislatorSchema);
 
-module.exports = {Comment, Legislator};
+module.exports = {
+  Comment,
+  Legislator,
+  getAllCongressMembers
+};

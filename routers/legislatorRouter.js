@@ -6,19 +6,17 @@ const router = express.Router();
 const bodyParser = require('body-parser');
 const jsonParser = bodyParser.json();
 
-const {Comment, Legislator} = require('../models/legislator');
+const {Comment, Legislator, getAllCongressMembers} = require('../models/legislator');
 
 /****************************************/
 /* Retrieve for each member of Congress */
 /****************************************/
 router.get('/', (req, res) => {
-  Legislator
-    .find()
-    .exec()
-    .then(congress => {
-      res.json(congress.map(con => con.apiRepr()));
-    })
-    .catch(err => res.status(500).json({message: 'Something went wrong'}));
+  getAllCongressMembers()
+  .then(congress => {
+    res.json(congress.map(con => con.apiRepr()));
+  })
+  .catch(err => res.status(500).json({message: 'Something went wrong'}));
 });
 
 /*************************/
@@ -102,4 +100,4 @@ router.delete('/:id/:cid', (req, res) => {
     });
 });
 
-module.exports = router;
+module.exports = {router, getAllCongressMembers};

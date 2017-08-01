@@ -3,23 +3,13 @@ const chaiHttp = require('chai-http');
 const faker = require('faker');
 const mongoose = require('mongoose');
 
-
-const {DATABASE_URL} = require('../config');
 const {Comment, Legislator} = require('../models/legislator');
 const {runServer, app, closeServer} = require('../server');
 const {TEST_DATABASE_URL} = require('../config');
+const {tearDownDb} = require('./helpers');
 
 const should = chai.should();
 chai.use(chaiHttp);
-
-function tearDownDb() {
-  return new Promise((resolve, reject) => {
-    console.warn('Deleting database');
-    mongoose.connection.dropDatabase()
-      .then(result => resolve(result))
-      .catch(err => reject(err))
-  });
-}
 
 function seedLegislatorData() {
   console.info('seeding Legislator data');

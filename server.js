@@ -5,7 +5,7 @@ const mongoose = require('mongoose');
 const morgan = require('morgan');
 
 const {connectDB, gracefulShutdown} = require('./models/connectDB');
-const legislatorRouter = require('./routers/legislatorRouter');
+const {router} = require('./routers/legislatorRouter');
 
 const {DATABASE_URL, PORT} = require('./config');
 const app = express();
@@ -16,7 +16,7 @@ app.use(express.static('public'));
 app.get('/', (req, res) => {
   res.sendFile(__dirname + '/public/views/index.html');
 });
-app.use('/legs', legislatorRouter);
+app.use('/legs', router);
 
 let server;
 function runServer(databaseUrl=DATABASE_URL, port=PORT) {
