@@ -6,7 +6,7 @@ const router = express.Router();
 const bodyParser = require('body-parser');
 const jsonParser = bodyParser.json();
 
-const {Comment, Legislator, getAllCongressMembers} = require('../models/legislator');
+const {Comment, Legislator, getAllCongressMembers, getCommentsForSingleCongress, deleteCommentForSingleCongress, createNewComment, updateCommentsForSingleCongress} = require('../models/legislator');
 
 /****************************************/
 /* Retrieve for each member of Congress */
@@ -35,25 +35,14 @@ router.post('/:id', jsonParser, (req,res) => {
     }
   }
 
-  Comment.create({
-    "username": req.body.username,
-    "name": req.body.name,
-    "review": req.body.review,
-    "usid": req.params.id
-  })
+  createNewComment(req.body.username, req.body.name, req.body.review, req.params.id)
   .then((congress) => res.status(201).json(congress))
   .catch(err => res.status(500).json({message: 'Something went wrong'}));
 });
 
-function getCommentsForSingleCongress(id) {
-  return Comment.find({usid: id}).exec();
-}
-
 //Retrieve all comments for single member of Congress
 router.get('/:id', (req,res) => {
-  Comment
-  .find({usid: req.params.id})
-  .exec()
+  getCommentsForSingleCongress(req.params.id)
   .then(congress => res.json(congress))
   .catch(err => res.status(500).json({message: 'Something went wrong'}));
 });
@@ -76,28 +65,19 @@ router.put('/:id/:cid', jsonParser, (req,res) => {
       updated[field] = req.body[field];
     }
   });
-  Comment.findByIdAndUpdate(req.params.cid,
-    {
-      "username": req.body.username,
-      "name": req.body.name,
-      "review": req.body.review,
-      "usid": req.params.id
-    },
-    {upsert: true, new: true})
-    .exec()
-    .then(comment => res.status(201).json(comment))
-    .catch(err => res.status(500).json({message: 'Something went wrong'}));
+
+  updateCommentsForSingleCongress(req.body.username, req.body.name, req.body.review, req.params.id, req.params.cid)
+  .then(comment => res.status(201).json(comment))
+  .catch(err => res.status(500).json({message: 'Something went wrong'}));
 });
 
 //Delete Comment for single member of Congress
 router.delete('/:id/:cid', (req, res) => {
-  Comment
-    .findByIdAndRemove(req.params.cid)
-    .exec()
-    .then(() => {
-      console.log(`Deleted blog post with id \`${req.params.cid}\``);
-      res.status(204).end();
-    });
+  deleteCommentForSingleCongress(req.params.cid)
+  .then(() => {
+    console.log(`Deleted blog post with id \`${req.params.cid}\``);
+    res.status(204).end();
+  });
 });
 
-module.exports = {router, getAllCongressMembers};
+module.exports = {router};

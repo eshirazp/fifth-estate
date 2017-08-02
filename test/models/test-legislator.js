@@ -3,7 +3,7 @@ const chai = require('chai');
 
 chai.should();
 
-describe('Legislator Model', function() {
+describe('Legislator Model Functions', function() {
   it('Testing the Legislator apiRepr function', function() {
     var legs = new Legislator({
       terms: [{

@@ -160,8 +160,7 @@ function commentIdx(conIdx, type, commentID) {
     }
     return -1;
   }
-
-  return -1;
+  
 }
 
 function createComment(comment) {

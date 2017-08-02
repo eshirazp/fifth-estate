@@ -57,7 +57,36 @@ legislatorSchema.methods.apiRepr = function() {
 }
 
 function getAllCongressMembers() {
-  return Legislator.find().exec()
+  return Legislator.find().exec();
+}
+
+function createNewComment(username, name, review, usid) {
+  return Comment.create({
+    "username": username,
+    "name": name,
+    "review": review,
+    "usid": usid
+  });
+}
+
+function getCommentsForSingleCongress(id) {
+  return Comment.find({usid: id}).exec();
+}
+
+function updateCommentsForSingleCongress(username, name, review, usid, cid) {
+  return Comment.findByIdAndUpdate(cid,
+  {
+    "username": username,
+    "name": name,
+    "review": review,
+    "usid": usid
+  },
+  {upsert: true, new: true})
+  .exec()
+}
+
+function deleteCommentForSingleCongress(cid) {
+  return Comment.findByIdAndRemove(cid).exec();
 }
 
 const Comment = mongoose.model('Comment', commentsSchema);
@@ -66,5 +95,9 @@ const Legislator = mongoose.model('Legislator', legislatorSchema);
 module.exports = {
   Comment,
   Legislator,
-  getAllCongressMembers
+  getAllCongressMembers,
+  getCommentsForSingleCongress,
+  deleteCommentForSingleCongress,
+  createNewComment,
+  updateCommentsForSingleCongress
 };

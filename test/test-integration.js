@@ -1,12 +1,10 @@
 const chai = require('chai');
 const chaiHttp = require('chai-http');
 const faker = require('faker');
-const mongoose = require('mongoose');
 
 const {Comment, Legislator} = require('../models/legislator');
-const {runServer, app, closeServer} = require('../server');
-const {TEST_DATABASE_URL} = require('../config');
-const {tearDownDb} = require('./helpers');
+const {app} = require('../server');
+const {testRunServer, testCloseServer, tearDownDb} = require('./helpers');
 
 const should = chai.should();
 chai.use(chaiHttp);
@@ -60,22 +58,12 @@ function seedCommentData() {
 }
 
 describe('Legislator API', function() {
-
-  before(function() {
-    return runServer(TEST_DATABASE_URL);
-  });
-
+  before(testRunServer);
   beforeEach(function() {
     return seedLegislatorData();
   });
-
-  afterEach(function() {
-    return tearDownDb();
-  });
-
-  after(function() {
-    return closeServer();
-  });
+  afterEach(tearDownDb);
+  after(testCloseServer);
 
   describe('GET endpoint for Congress Member', function() {
     it('GET: List all Congress Members', function() {
@@ -90,22 +78,12 @@ describe('Legislator API', function() {
 });
 
 describe('Comment API', function() {
-
-  before(function() {
-    return runServer(TEST_DATABASE_URL);
-  });
-
+  before(testRunServer);
   beforeEach(function() {
     return seedCommentData();
   });
-
-  afterEach(function() {
-    return tearDownDb();
-  });
-
-  after(function() {
-    return closeServer();
-  });
+  afterEach(tearDownDb);
+  after(testCloseServer);
 
   describe('POST Endpoint for Comment', function() {
     it('POST: Create a comment for one congress member', function() {
