@@ -52,7 +52,7 @@ describe('Legislator Model', function() {
     });
   });
 
-  it('Testing the Comment Model updateCommentsForSingleCongress function ', function() {
+  it('Testing the Comment Model getCommentsForSingleCongress function ', function() {
     let lid;
 
     return Legislator
@@ -81,7 +81,7 @@ describe('Legislator Model', function() {
     });
   });
 
-  it('Testing the Comment Model with creating a new entry and then deleting it', function() {
+  it('Testing the Comment Model updateCommentsForSingleCongress function', function() {
     let lid;
     let cid;
 
@@ -115,7 +115,7 @@ describe('Legislator Model', function() {
       })
       .then(res => {
         res.should.be.a('array');
-        res[0].username.should.equal("eshirazp1");
+        res[0].username.should.equal("eshirazp");
         res[0].name.should.equal("Elush");
         res[0].review.should.equal("Review");
       });
