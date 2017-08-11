@@ -22,7 +22,7 @@ img {
   overflow: hidden;
 
   width: 100%;
-  max-height: 800px;
+  max-height: 400px;
 }
 
 #banner-video {
@@ -45,7 +45,7 @@ video::-webkit-media-controls {
 
 #banner-text {
   position: absolute;
-  top: 10%;
+  top: 5%;
   left: 40%;
 
   color: #BF0A30;
@@ -56,8 +56,26 @@ video::-webkit-media-controls {
 
 #dropdown-menu {
   position: absolute;
-  top: 25%;
-  left: 45%;
+  top: 45%;
+  left: 40%;
+}
+
+select.small-12.cell {
+  height: 60px;
+
+  color: #002868;
+
+  font-family: 'Comfortaa', cursive;
+  font-size: 30px;
+}
+
+input#js-dropdown-submit.small-12.cell {
+  height: 60px;
+
+  color: #BF0A30;
+
+  font-family: 'Comfortaa', cursive;
+  font-size: 30px;
 }
 
 form {
@@ -66,6 +84,15 @@ form {
 
 input {
   display: inline-block;
+}
+
+.searching-text {
+  text-align: center;
+
+  color: white;
+
+  font-family: 'Zilla Slab', serif;
+  font-size: 28px;
 }
 
 .content {
@@ -124,8 +151,8 @@ p.comment-text {
 }
 
 div.results-card {
-  margin-left: 50px;
   margin-bottom: 50px;
+  margin-left: 50px;
 }
 
 p.results-text {

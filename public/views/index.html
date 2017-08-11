@@ -12,7 +12,7 @@
 </head>
 <body>
 
-  <div class="title-banner"> <!-- poster -->
+  <div class="title-banner cell">
 
     <video id="banner-video" poster="../images/capitol-building.jpg" autoplay loop muted>
       <source src="../videoes/whiteHouseBrollWinter.mp4" type="video/mp4">
@@ -22,8 +22,8 @@
       <h1 id="banner-text">The Fifth Estate</h1>
     </div>
 
-    <div class="grid-x"  id="dropdown-menu">
-      <form id="js-dropdown-form" class="small-10 cell">
+    <div id="dropdown-menu">
+      <form id="js-dropdown-form">
         <select class="small-12 cell" name="states">
           <option value="AL">Alabama</option>
           <option value="AK">Alaska</option>
@@ -78,13 +78,14 @@
         </select>
         <input id="js-dropdown-submit" class="small-12 cell" type="submit">
       </form>
+
+      <p class="searching-text js-searching hidden">Searching...</p>
     </div>
 
   </div>
 
 
   <div class="grid-container content">
-    <p class="results-text js-searching hidden">Searching...</p>
     <h3 class="results-headers js-results-header hidden">Senators</h3>
     <div class="js-senators-div grid-x"></div>
 
