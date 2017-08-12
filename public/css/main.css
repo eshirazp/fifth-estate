@@ -17,36 +17,13 @@ img {
 }
 
 .title-banner {
-  position: relative;
-
-  overflow: hidden;
-
-  width: 100%;
-  max-height: 400px;
-}
-
-#banner-video {
-  width: 100%;
-}
-
-video::-webkit-media-controls {
-  display: none !important;
-}
-
-#banner-opaque {
-  position: absolute;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-
-  background-color: rgba(0, 0, 0, .5);
+  justify-content: center;
+  background: url(../images/capitol-building.jpg) no-repeat;
+  min-height: 100%;
 }
 
 #banner-text {
-  position: absolute;
-  top: 5%;
-  left: 40%;
+  text-align: center;
 
   color: #BF0A30;
 
@@ -55,9 +32,7 @@ video::-webkit-media-controls {
 }
 
 #dropdown-menu {
-  position: absolute;
-  top: 45%;
-  left: 40%;
+  text-align: center;
 }
 
 select.small-12.cell {
@@ -66,16 +41,17 @@ select.small-12.cell {
   color: #002868;
 
   font-family: 'Comfortaa', cursive;
-  font-size: 30px;
+  font-size: 26px;
 }
 
-input#js-dropdown-submit.small-12.cell {
+input#js-dropdown-submit {
   height: 60px;
 
   color: #BF0A30;
+  background-color: white;
 
   font-family: 'Comfortaa', cursive;
-  font-size: 30px;
+  font-size: 26px;
 }
 
 form {
@@ -100,6 +76,7 @@ input {
 }
 
 .results-headers {
+  justify-content: center;
   color: #002868;
 
   font-family: 'Cinzel', serif;
