@@ -88,14 +88,25 @@
   </div>
 
   <div id="myModal" class="tiny reveal js-fieldset-modal" data-reveal>
+    <label class="modal-text modal-label" for="name">Username</label>
+    <input class="modal-text modal-input username" type="text" placeholder="eshirel" name="username">
+    <br>
     <label class="modal-text modal-label" for="name">Name</label>
-    <input class="modal-text modal-input name" type="text" placeholder="Elush Shirazpour" name="name" class="name">
+    <input class="modal-text modal-input name" type="text" placeholder="Elush Shirazpour" name="name">
     <br>
     <label class="modal-text modal-label" for="review">Review</label>
-    <input class="modal-text modal-input review" type="text" placeholder="Great!" name="review" class="review">
+    <input class="modal-text modal-input review" type="text" placeholder="Great!" name="review">
     <br>
     <p class="js-warning-modal modal-text modal-warning hidden">Please fill out both Name and Review</p>
     <button class="js-submit-modal modal-button" data-close>Submit</button>
+    <button class="modal-button" data-close>Cancel</button>
+  </div>
+
+  <div id="myModal-delete" class="tiny reveal js-fieldset-modal" data-reveal>
+    <label class="modal-text modal-label" for="name">Username</label>
+    <input class="modal-text modal-input username" type="text" placeholder="eshirel" name="username">
+    <br>
+    <button class="js-submit-modal-delete modal-button" data-close>Submit</button>
     <button class="modal-button" data-close>Cancel</button>
   </div>
 

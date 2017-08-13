@@ -35,7 +35,10 @@
     });
   };
 
-  window.updateCommentAPI = function(id, cid, comment) {
+  window.updateCommentAPI = function(id, cid, comment, username, usernameEntry) {
+    if(username != usernameEntry)
+      return -1;
+
     var request = new Request('/legs/' + id + '/' + cid, {
       method: 'PUT',
       body: JSON.stringify(comment),
@@ -49,7 +52,10 @@
     return fetch(request);
   };
 
-  window.deleteCommentAPI = function(id, cid, username) {
+  window.deleteCommentAPI = function(id, cid, username, usernameEntry) {
+    if(username != usernameEntry)
+      return -1;
+
     var request = new Request('/legs/' + id + '/' + cid, {
       method: 'DELETE',
       mode: 'cors',

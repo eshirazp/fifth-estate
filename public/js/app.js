@@ -10,7 +10,7 @@ function commentResults(comments) {
   var commentsListBeg = '<div class="js-comments-list">'
   var commentBeg='<div class="comment">';
   var updateButton = (selectedUserName, selectedCommentID) => `<button data-open="myModal" data-username=${selectedUserName} data-cid=${selectedCommentID} class="js-update-button comment-button update-button">Update</button>`;
-  var deleteButton = (selectedUserName, selectedCommentID) => `<button data-username=${selectedUserName} data-cid=${selectedCommentID} class="js-delete-button comment-button delete-button">Delete</button>`;
+  var deleteButton = (selectedUserName, selectedCommentID) => `<button data-open="myModal-delete" data-username=${selectedUserName} data-cid=${selectedCommentID} class="js-delete-button comment-button delete-button">Delete</button>`;
   var addButton = '<button data-open="myModal" class="js-add-button comment-button add-button">Add Comment</button>';
   var divEnd = '</div>';
 
@@ -160,7 +160,7 @@ function commentIdx(conIdx, type, commentID) {
     }
     return -1;
   }
-  
+
 }
 
 function createComment(comment) {
@@ -177,9 +177,12 @@ function createComment(comment) {
   renderHTML();
 }
 
-function updateComment(comment) {
+function updateComment(comment, username) {
   var conIdx = congressIdx(store.currentID, store.currentType);
   var comIdx = commentIdx(conIdx, store.currentType, store.currentCommentID);
+
+  if(updateCommentAPI(store.currentID, store.currentCommentID, comment, store.currentUsername, username) == -1)
+    return;
 
   if(store.currentType === 'sen') {
     store.sen[conIdx].comments[comIdx].name = comment.name;
@@ -190,14 +193,15 @@ function updateComment(comment) {
     store.rep[conIdx].comments[comIdx].name = comment.name;
     store.rep[conIdx].comments[comIdx].review = comment.review;
   }
-
-  updateCommentAPI(store.currentID, store.currentCommentID, comment);
   renderHTML();
 }
 
-function deleteComment() {
+function deleteComment(username) {
   var conIdx = congressIdx(store.currentID, store.currentType);
   var comIdx = commentIdx(conIdx, store.currentType, store.currentCommentID);
+
+  if(deleteCommentAPI(store.currentID, store.currentCommentID, store.currentUsername, username) == -1)
+    return;
 
   if(store.currentType === 'sen') {
     store.sen[conIdx].comments.splice(comIdx, 1);
@@ -206,8 +210,6 @@ function deleteComment() {
   if(store.currentType === 'rep') {
     store.rep[conIdx].comments.splice(comIdx, 1);
   }
-
-  deleteCommentAPI(store.currentID, store.currentCommentID, store.currentUsername);
   renderHTML();
 }
 
@@ -233,7 +235,7 @@ $(function() {
 
   $(".content").on("click", ".js-add-button", (function(event) {
     event.preventDefault();
-    store.currentUsername = "eshirazp";
+    store.currentUsername = $(this).parent('.results-card').attr('data-username');
     store.currentID = $(this).parent('.results-card').attr('data-id');
     store.currentType = $(this).parent('.results-card').attr('data-type');
     updateTrueOrCreateFalseFlag = false;
@@ -254,24 +256,32 @@ $(function() {
     store.currentCommentID = $(this).attr('data-cid');
     store.currentID = $(this).parent('.js-comments-list').parent('.results-card').attr('data-id');
     store.currentType = $(this).parent('.js-comments-list').parent('.results-card').attr('data-type');
-    deleteComment();
   }));
 
+  $('.js-submit-modal-delete').click(function(event) {
+    var username = $(this).parent().find('.username').val();
+    if(username.trim() === "") {
+      return;
+    }
+    deleteComment(username);
+  });
+
   $('.js-submit-modal').click(function(event) {
+    var username = $(this).parent().find('.username').val();
     var name = $(this).parent().find('.name').val();
     var review = $(this).parent().find('.review').val();
-    console.log(name);
     comment = {
       "_id": store.currentCommentID,
-      "username": store.currentUsername,
+      "username": username,
       "name": name,
       "review": review
     };
     if(name.trim() === "" || review.trim() === "") {
       return;
     }
+
     if(updateTrueOrCreateFalseFlag)
-      updateComment(comment);
+      updateComment(comment, username);
     else
       createComment(comment);
   });
