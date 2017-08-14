@@ -266,7 +266,8 @@ $(function() {
     deleteComment(username);
   });
 
-  $('.js-submit-modal').click(function(event) {
+  $('.js-submit-modal').submit(function(event) {
+    event.preventDefault();
     var username = $(this).parent().find('.username').val();
     var name = $(this).parent().find('.name').val();
     var review = $(this).parent().find('.review').val();
@@ -276,13 +277,12 @@ $(function() {
       "name": name,
       "review": review
     };
-    if(name.trim() === "" || review.trim() === "") {
-      return;
-    }
 
     if(updateTrueOrCreateFalseFlag)
       updateComment(comment, username);
     else
       createComment(comment);
+
+    $('#myModal').foundation('close');
   });
 });
