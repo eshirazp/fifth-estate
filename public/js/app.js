@@ -258,12 +258,11 @@ $(function() {
     store.currentType = $(this).parent('.js-comments-list').parent('.results-card').attr('data-type');
   }));
 
-  $('.js-submit-modal-delete').click(function(event) {
+  $('.js-submit-modal-delete').submit(function(event) {
+    event.preventDefault();
     var username = $(this).parent().find('.username').val();
-    if(username.trim() === "") {
-      return;
-    }
     deleteComment(username);
+    $('#myModal-delete').foundation('close');
   });
 
   $('.js-submit-modal').submit(function(event) {

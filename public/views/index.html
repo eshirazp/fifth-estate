@@ -105,11 +105,13 @@
   </div>
 
   <div id="myModal-delete" class="tiny reveal js-fieldset-modal" data-reveal>
-    <label class="modal-text modal-label" for="name">Username</label>
-    <input class="modal-text modal-input username" type="text" placeholder="eshirel" name="username">
-    <br>
-    <button class="js-submit-modal-delete modal-button" data-close>Submit</button>
-    <button class="modal-button" data-close>Cancel</button>
+    <form class="js-submit-modal-delete">
+      <label class="modal-text modal-label" for="name">Username</label>
+      <input required class="modal-text modal-input username" type="text" placeholder="eshirel" name="username">
+      <br>
+      <input type="submit" class="modal-button" value="Submit"/>
+      <input type="reset" class="modal-button" data-close value="Cancel" />
+    </form>
   </div>
 
   <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
