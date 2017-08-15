@@ -1,11 +1,16 @@
+"use strict";
+
 const ENTER_KEY = 13;
 const MAX_COMMENTS = 5;
 
+/* Local store which is used by renderHTML */
 var store = {};
 
-/*********************************************/
-/* Acquire State HTML Strings for renderHTML */
-/*********************************************/
+
+/******************************************************************************
+  commentResults
+    Acquire Comments HTML Strings for renderHTML
+********************************************************************************/
 function commentResults(comments) {
   var commentsListBeg = '<div class="js-comments-list">'
   var commentBeg='<div class="comment">';
@@ -30,6 +35,10 @@ function commentResults(comments) {
   return commentsHTML;
 }
 
+/******************************************************************************
+  senatorsResults
+    Acquire Senators HTML Strings for renderHTML
+********************************************************************************/
 function senatorsResults() {
   var cardSetupBeg = (selectedID, selectedType) => `<div data-id=${selectedID} data-type=${selectedType} class="results-card medium-2 small-3 cell">`;
   var divEnd = '</div>';
@@ -50,6 +59,10 @@ function senatorsResults() {
   return senatorsHTML;
 }
 
+/******************************************************************************
+  representativesResults
+    Acquire Representatives HTML Strings for renderHTML
+********************************************************************************/
 function representativesResults() {
   var cardSetupBeg = (selectedID, selectedType) => `<div data-id=${selectedID} data-type=${selectedType} class="results-card medium-2 small-3 cell">`;
   var divEnd = '</div>';
@@ -70,21 +83,34 @@ function representativesResults() {
   return representativesHTML;
 }
 
-/**************************/
-/* Display Results on DOM */
-/**************************/
+/******************************************************************************
+  hideSearching
+    Hide the searching notification for the banner
+********************************************************************************/
 function hideSearching() {
   $('.js-searching').addClass("hidden");
 }
 
+/******************************************************************************
+  revealSearching
+    No longer hide the searching notification for the banner
+********************************************************************************/
 function revealSearching() {
   $('.js-searching').removeClass("hidden");
 }
 
+/******************************************************************************
+  revealResultsHeaders
+    No longer hide the results for the DOM
+********************************************************************************/
 function revealResultsHeaders() {
   $('.js-results-header').removeClass("hidden");
 }
 
+/******************************************************************************
+  renderHTML
+    Use the store object to completely redraw the DOM
+********************************************************************************/
 function renderHTML() {
   let senatorsHTML = senatorsResults();
   let representativesHTML = representativesResults();
@@ -102,9 +128,10 @@ function renderHTML() {
   }, 1000);
 }
 
-/**********************************/
-/* Configure and Manipulate Store */
-/**********************************/
+/******************************************************************************
+  configureStore
+    Update the store with new information using the API
+********************************************************************************/
 function configureStore(state) {
   var errorHandler = (err) => console.error("Could not get state congress: " + err);
   store.state = state;
@@ -120,6 +147,10 @@ function configureStore(state) {
   .catch(errorHandler);
 }
 
+/******************************************************************************
+  congressIdx
+    Acquire the index of the stores object for a specific congress member
+********************************************************************************/
 function congressIdx(id, type) {
   if(type === "sen") {
     for(var i=0; i < store.sen.length; i++) {
@@ -142,6 +173,10 @@ function congressIdx(id, type) {
   return -1;
 }
 
+/******************************************************************************
+  commentIdx
+    Acquire the index of the stores object for a specific comment
+********************************************************************************/
 function commentIdx(conIdx, type, commentID) {
   if(type === "sen") {
     for(var i=0; i < store.sen[conIdx].comments.length; i++) {
@@ -163,6 +198,11 @@ function commentIdx(conIdx, type, commentID) {
 
 }
 
+/******************************************************************************
+  createComment
+    Add a comment to the stores object, while also calling the 
+    createComment API 
+********************************************************************************/
 function createComment(comment) {
   var conIdx = congressIdx(store.currentID, store.currentType);
 
@@ -177,6 +217,11 @@ function createComment(comment) {
   renderHTML();
 }
 
+/******************************************************************************
+  updateComment
+    Update a comment to the stores object, while also calling the 
+    updateComment API 
+********************************************************************************/
 function updateComment(comment, username) {
   var conIdx = congressIdx(store.currentID, store.currentType);
   var comIdx = commentIdx(conIdx, store.currentType, store.currentCommentID);
@@ -196,6 +241,11 @@ function updateComment(comment, username) {
   renderHTML();
 }
 
+/******************************************************************************
+  deleteComment
+    Delete a comment to the stores object, while also calling the 
+    deleteComment API 
+********************************************************************************/
 function deleteComment(username) {
   var conIdx = congressIdx(store.currentID, store.currentType);
   var comIdx = commentIdx(conIdx, store.currentType, store.currentCommentID);
@@ -213,18 +263,20 @@ function deleteComment(username) {
   renderHTML();
 }
 
-/*****************/
-/* Event Handler */
-/*****************/
+/******************************************************************************
+  Event Handlers
+********************************************************************************/
 $(function() {
   var updateTrueOrCreateFalseFlag;
 
+  /* Submit button on the dropdown menu in the title banner */
   $("#js-dropdown-submit").click(function(event) {
     event.preventDefault();
     var state = $(this).parent('#js-dropdown-form').find('select[name="states"] option:selected').val();
     configureStore(state);
   });
 
+  /* Pressing ENTER key on the dropdown menu in the title banner */
   $("#js-dropdown-form").keypress(function(event) {
     if(event === ENTER_KEY) {
       event.preventDefault();
@@ -233,6 +285,7 @@ $(function() {
     }
   });
 
+  /* Add Comment */
   $(".content").on("click", ".js-add-button", (function(event) {
     event.preventDefault();
     store.currentUsername = $(this).parent('.results-card').attr('data-username');
@@ -241,6 +294,7 @@ $(function() {
     updateTrueOrCreateFalseFlag = false;
   }));
 
+  /* Update Comment */
   $(".content").on("click", ".js-update-button", (function(event) {
     event.preventDefault();
     store.currentUsername = $(this).attr('data-username');
@@ -250,6 +304,7 @@ $(function() {
     updateTrueOrCreateFalseFlag = true;
   }));
 
+  /* Delete Comment */
   $(".content").on("click", ".js-delete-button", (function(event) {
     event.preventDefault();
     store.currentUsername = $(this).attr('data-username');
@@ -258,6 +313,7 @@ $(function() {
     store.currentType = $(this).parent('.js-comments-list').parent('.results-card').attr('data-type');
   }));
 
+  /* Delete Comment Modal */
   $('.js-submit-modal-delete').submit(function(event) {
     event.preventDefault();
     var username = $(this).parent().find('.username').val();
@@ -265,6 +321,7 @@ $(function() {
     $('#myModal-delete').foundation('close');
   });
 
+  /* Add or Update Button Modal */
   $('.js-submit-modal').submit(function(event) {
     event.preventDefault();
     var username = $(this).parent().find('.username').val();

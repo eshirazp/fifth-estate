@@ -1,9 +1,14 @@
+"use strict";
+
 /* global window */
 
 (function() {
-  /*********************/
-  /* CRUD for Comments */
-  /*********************/
+
+  /******************************************************************************
+    createCommentAPI
+      Create Comment for the MongoDB using a fetch call with Congress Member 
+      ID and Comment
+  ********************************************************************************/
   window.createCommentAPI = function(id, comment) {
     var request = new Request('/legs/' + id, {
       method: 'POST',
@@ -17,6 +22,11 @@
     return fetch(request);
   };
 
+  /******************************************************************************
+    retrieveComments
+      Retrieve Comment from the MongoDB using a fetch call with single 
+      Congress Member ID
+  ********************************************************************************/
   var retrieveComments = function(id) {
     var request = new Request('/legs/' + id, {
       method: 'GET',
@@ -35,6 +45,12 @@
     });
   };
 
+  /******************************************************************************
+    updateCommentAPI
+      Update Comment from the MongoDB using a fetch call with single 
+      Congress Member ID, single Comment ID, and new Comment. 
+      Username and usernameEntry is for security 
+  ********************************************************************************/
   window.updateCommentAPI = function(id, cid, comment, username, usernameEntry) {
     if(username != usernameEntry)
       return -1;
@@ -52,6 +68,12 @@
     return fetch(request);
   };
 
+  /******************************************************************************
+    deleteCommentAPI
+      Delete Comment from the MongoDB using a fetch call with single 
+      Congress Member ID, single Comment ID. 
+      Username and usernameEntry is for security 
+  ********************************************************************************/
   window.deleteCommentAPI = function(id, cid, username, usernameEntry) {
     if(username != usernameEntry)
       return -1;
@@ -68,9 +90,12 @@
     return fetch(request);
   };
 
-  /**************************/
-  /* Retriving for Congress */
-  /**************************/
+  /******************************************************************************
+    retrieveByState
+      Retrieve list of all Congress members based on the state and type (Senator 
+      or Representative). Makes fetch request to grab all and then fliter in 
+      internal methods within  
+  ********************************************************************************/
   window.retrieveByState = function(state, type) {
 
     var retrieveBySenator = function(congress) {

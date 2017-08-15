@@ -12,11 +12,10 @@
 </head>
 <body>
 
-  <div class="title-banner grid-x">
-
-  <h1 class="cell" id="banner-text">The Fifth Estate</h1>
-
-    <div class="cell" id="dropdown-menu">
+  <!-- Title Banner with background image, title, dropdown menu, and searching notification -->
+  <div role="title-banner" class="title-banner grid-x">
+    <h1 role="banner-text" class="cell" id="banner-text">The Fifth Estate</h1>
+    <div role="banner-dropdown-menu" class="cell" id="dropdown-menu">
       <form id="js-dropdown-form">
         <select class="small-12 cell" name="states">
           <option value="AL">Alabama</option>
@@ -72,53 +71,55 @@
         </select>
         <input id="js-dropdown-submit" class="small-12 cell" type="submit">
       </form>
-
-      <p class="searching-text js-searching hidden">Searching...</p>
+    <p role="banner-searching-notification" class="searching-text js-searching hidden">Searching...</p>
     </div>
-
   </div>
 
+  <!-- Results with section for senators and representatives -->
+  <div role="results-content" class="grid-container content">
+    <h3 role="results-senators-title" class="results-headers js-results-header grid-x cell hidden">Senators</h3>
+    <div role="results-senators" class="js-senators-div grid-x"></div>
 
-  <div class="grid-container content">
-    <h3 class="results-headers js-results-header grid-x cell hidden">Senators</h3>
-    <div class="js-senators-div grid-x"></div>
-
-    <h3 class="results-headers js-results-header grid-x cell hidden">Representatives</h3>
-    <div class="js-representatives-div grid-x"></div>
+    <h3 role="results-representatives-title" class="results-headers js-results-header grid-x cell hidden">Representatives</h3>
+    <div role="results-representatives" class="js-representatives-div grid-x"></div>
   </div>
 
-  <div id="myModal" class="tiny reveal js-fieldset-modal" data-reveal>
+  <!-- Update or Create Comment Modal -->
+  <div role="update-create-modal" id="myModal" class="tiny reveal js-fieldset-modal" data-reveal>
     <form class="js-submit-modal">
-      <label class="modal-text modal-label" for="name">Username</label>
-      <input required class="modal-text modal-input username" type="text" placeholder="eshirel" name="username">
+      <label role="label-username" class="modal-text modal-label" for="name">Username</label>
+      <input role="input-username" required class="modal-text modal-input username" type="text" placeholder="eshirel" name="username">
       <br>
-      <label class="modal-text modal-label" for="name">Name</label>
-      <input required class="modal-text modal-input name" type="text" placeholder="Elush Shirazpour" name="name">
+      <label role="label-name" class="modal-text modal-label" for="name">Name</label>
+      <input role="label-name" required class="modal-text modal-input name" type="text" placeholder="Elush Shirazpour" name="name">
       <br>
-      <label class="modal-text modal-label" for="review">Review</label>
-      <input required class="modal-text modal-input review" type="text" placeholder="Great!" name="review">
+      <label role="label-review" class="modal-text modal-label" for="review">Review</label>
+      <input role="label-review" required class="modal-text modal-input review" type="text" placeholder="Great!" name="review">
       <br>
       <p class="js-warning-modal modal-text modal-warning hidden">Please fill out both Name and Review</p>
-      <input type="submit" class="modal-button" value="Submit"/>
-      <input type="reset" class="modal-button" data-close value="Cancel" />
+      <input role="submit-modal" type="submit" class="modal-button" value="Submit"/>
+      <input role="reset-modal" type="reset" class="modal-button" data-close value="Cancel" />
     </form>
   </div>
 
-  <div id="myModal-delete" class="tiny reveal js-fieldset-modal" data-reveal>
+  <!-- Delete Comment Modal -->
+  <div role="delete-modal" id="myModal-delete" class="tiny reveal js-fieldset-modal" data-reveal>
     <form class="js-submit-modal-delete">
-      <label class="modal-text modal-label" for="name">Username</label>
-      <input required class="modal-text modal-input username" type="text" placeholder="eshirel" name="username">
+      <label role="label-username" class="modal-text modal-label" for="name">Username</label>
+      <input role="label-username" required class="modal-text modal-input username" type="text" placeholder="eshirel" name="username">
       <br>
-      <input type="submit" class="modal-button" value="Submit"/>
-      <input type="reset" class="modal-button" data-close value="Cancel" />
+      <input role="submit-modal" type="submit" class="modal-button" value="Submit"/>
+      <input role="reset-modal" type="reset" class="modal-button" data-close value="Cancel" />
     </form>
   </div>
 
+  <!-- Scripts -->
   <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
   <script src="../js/vendor/foundation.min.js"></script>
   <script src="../js/api.js"></script>
   <script src="../js/app.js"></script>
 
+  <!-- Foundation 6 Script for Modal -->
   <script>
     $(document).foundation();
   </script>

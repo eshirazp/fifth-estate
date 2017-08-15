@@ -1,7 +1,15 @@
+"use strict";
+
 var mongoose = require('mongoose');
 
+// to use ES6 alongside Mongoose
 mongoose.Promise = global.Promise;
 
+/******************************************************************************
+  connectDB
+    This function connects to a database based on its databaseUrl parameter.
+    Returns a promise so it can be bundled with starting the server in server.js 
+********************************************************************************/
 function connectDB(databaseUrl) {
   return mongoose.connect(databaseUrl, {useMongoClient: true})
   .then(() => {
@@ -13,8 +21,12 @@ function connectDB(databaseUrl) {
   });
 }
 
-// CAPTURE APP TERMINATION / RESTART EVENTS
-// To be called when process is restarted or terminated
+/******************************************************************************
+  gracefulShutdown
+    This function disconnects the database and states the reason with the msg
+    parameter. Reason can me a restart or app terminated.
+    Returns a promise so it can be bundled with closing the server in server.js 
+********************************************************************************/
 function gracefulShutdown(msg) {
   return new Promise((resolve, reject) => {
     mongoose.connection.close((err) => {

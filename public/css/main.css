@@ -1,13 +1,16 @@
+/* General CSS Ruleset for the entire page */
 * {
   box-sizing: border-box;
 }
 
+/* General CSS Ruleset for the entire page */
 body, html {
   height: 100%;
   margin: 0;
   padding: 0;
 }
 
+/* General CSS Ruleset for the entire page */
 img {
   width: 100%;
   height: auto;
@@ -16,12 +19,14 @@ img {
   border-radius: 50%;
 }
 
+/* The banner image */
 .title-banner {
   justify-content: center;
   background: url(../images/capitol-building.jpg) no-repeat;
   min-height: 100%;
 }
 
+/* The banner text */
 #banner-text {
   text-align: center;
 
@@ -31,10 +36,12 @@ img {
   font-size: 48px;
 }
 
+/* The dropdown menu in the banner */
 #dropdown-menu {
   text-align: center;
 }
 
+/* The dropdown menu text in the banner */
 select.small-12.cell {
   height: 60px;
 
@@ -44,6 +51,7 @@ select.small-12.cell {
   font-size: 26px;
 }
 
+/* The dropdown menu buttons in the banner */
 input#js-dropdown-submit {
   height: 60px;
 
@@ -54,6 +62,7 @@ input#js-dropdown-submit {
   font-size: 26px;
 }
 
+/* The form inside the modal */
 form {
   display: inline-block;
 }
@@ -62,6 +71,7 @@ input {
   display: inline-block;
 }
 
+/* The searching notification in the banner */
 .searching-text {
   text-align: center;
 
@@ -75,6 +85,7 @@ input {
   position: relative;
 }
 
+/* The headers (Senators, Representatives) */
 .results-headers {
   justify-content: center;
   color: #002868;
@@ -83,6 +94,7 @@ input {
   font-size: 30px;
 }
 
+/* The content for (Senators, Representatives) */
 .results-text {
   text-align: center;
 
@@ -92,10 +104,12 @@ input {
   font-size: 22px;
 }
 
+/* Background color of each comment */
 .comment {
     background-color: rgb(218, 213, 247);
 }
 
+/* Comment text */
 .comment-text {
   margin-right: 5px;
   padding: 2px 5px;
@@ -113,6 +127,7 @@ p.comment-text {
   margin-bottom: 5px;
 }
 
+/* Comment buttons (Update, Delete, Add) */
 .comment-button {
   display: inline-block;
 
@@ -127,6 +142,7 @@ p.comment-text {
   font-size: 16px;
 }
 
+/* Each member of Congress */
 div.results-card {
   margin-bottom: 50px;
   margin-left: 50px;
@@ -136,6 +152,7 @@ p.results-text {
   margin: 0;
 }
 
+/* Modal rulesets */
 input.modal-input {
   margin-right: 10px;
   margin-bottom: 10px;
@@ -169,6 +186,7 @@ input.modal-input {
   font-size: 18px;
 }
 
+/* To hide anything to be revealed later */
 .hidden {
   display: none;
 }
