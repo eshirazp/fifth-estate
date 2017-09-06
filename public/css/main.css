@@ -36,6 +36,17 @@ img {
   font-size: 48px;
 }
 
+/* The banner descriptive text */
+#banner-desc-text {
+  text-align: center;
+
+  color: white;
+  background-color: #BF0A30;
+
+  font-family: 'Comfortaa', cursive;
+  font-size: 22px;
+}
+
 /* The dropdown menu in the banner */
 #dropdown-menu {
   text-align: center;

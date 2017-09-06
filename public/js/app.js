@@ -200,8 +200,8 @@ function commentIdx(conIdx, type, commentID) {
 
 /******************************************************************************
   createComment
-    Add a comment to the stores object, while also calling the 
-    createComment API 
+    Add a comment to the stores object, while also calling the
+    createComment API
 ********************************************************************************/
 function createComment(comment) {
   var conIdx = congressIdx(store.currentID, store.currentType);
@@ -219,8 +219,8 @@ function createComment(comment) {
 
 /******************************************************************************
   updateComment
-    Update a comment to the stores object, while also calling the 
-    updateComment API 
+    Update a comment to the stores object, while also calling the
+    updateComment API
 ********************************************************************************/
 function updateComment(comment, username) {
   var conIdx = congressIdx(store.currentID, store.currentType);
@@ -243,8 +243,8 @@ function updateComment(comment, username) {
 
 /******************************************************************************
   deleteComment
-    Delete a comment to the stores object, while also calling the 
-    deleteComment API 
+    Delete a comment to the stores object, while also calling the
+    deleteComment API
 ********************************************************************************/
 function deleteComment(username) {
   var conIdx = congressIdx(store.currentID, store.currentType);
@@ -274,6 +274,10 @@ $(function() {
     event.preventDefault();
     var state = $(this).parent('#js-dropdown-form').find('select[name="states"] option:selected').val();
     configureStore(state);
+    var etop = $('.content').offset().top;
+    $('html, body').animate({
+	     scrollTop: etop
+	  }, 1000);
   });
 
   /* Pressing ENTER key on the dropdown menu in the title banner */
@@ -282,6 +286,10 @@ $(function() {
       event.preventDefault();
       var state = $(this).find('select[name="states"] option:selected').val();
       configureStore(state);
+      var etop = $('.content').offset().top;
+      $('html, body').animate({
+  	     scrollTop: etop
+  	  }, 1000);
     }
   });
 
